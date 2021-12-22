@@ -41,11 +41,11 @@
 
         <div class="m-4">
         
-            <div class="dropdown">
-                <button id="country" type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown">Choose Country</button>
-                <ul class='dropdown-menu' aria-labelledby="country" id="sel">
-                  
-                </ul>
+            <div>
+                <select id="sel">
+                    <option value="">-- Select --</option>
+                </select>
+                
             </div>
             
             </div>
@@ -55,12 +55,14 @@
         <p class="lead">Your Current location (Country border) is highlighting  on the map below if you don't select a country from the list above</p>
         
         <div id="map"></div>
+  
     
     </div>
     <div class="row g-3">
         <div class="col-md-6 col-lg-4 col-xl-3">
             <h2>Demographic</h2>
             <p><strong>Name: </strong><span id="txtName"></span></p><hr class="sideHr">
+           
                         <p><strong>Languages: </strong><span class="data" id="txtLanguages"></span></p><hr class="sideHr">
                         <p><strong>Currency: </strong><span class="data" id="currency"></span></p><hr class="sideHr">
                         <p><strong>Flag: </strong></p><img id="flag" src=""><p></p><hr class="sideHr">

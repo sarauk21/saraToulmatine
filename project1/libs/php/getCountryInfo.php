@@ -7,7 +7,7 @@
 
 	$executionStartTime = microtime(true);
 
-	$url='http://api.geonames.org/countryInfoJSON?formatted=true&lang=' . $_REQUEST['lang'] . '&country=' . $_REQUEST['countryName'] . '&username=saraapi';
+	$url='http://api.geonames.org/countryInfoJSON?formatted=true&lang=' . $_REQUEST['lang'] . '&country=' . $_REQUEST['country'] . '&username=saraapi';
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -17,7 +17,7 @@
 	$result=curl_exec($ch);
 
 	curl_close($ch);
-
+//echo $result;
 	$decode = json_decode($result,true);	
 
 	$output['status']['code'] = "200";
@@ -29,5 +29,6 @@
 	header('Content-Type: application/json; charset=UTF-8');
 
 	echo json_encode($output); 
+
 
 ?>
