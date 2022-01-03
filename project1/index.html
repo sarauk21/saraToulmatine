@@ -16,41 +16,44 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a href="#" class="navbar-brand">Gazetteer</a>
+        <a href="./" class="navbar-brand">Gazetteer</a>
         <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-                <a href="#" class="nav-item nav-link active">Home</a>
-                <a href="#" class="nav-item nav-link">Wikipidia Link </a>
-                <a href="#" class="nav-item nav-link">Weather</a>
-                <a href="#" class="nav-item nav-link">Contact</a>
+               <button type="button" class="btn btn-secondary"> <a href="./index.html" class="nav-item nav-link active">Home</a></button>
+               &nbsp; 
+               <button type="button" id="myBtn" class="btn btn-info">Country information</button>
+                &nbsp;
+                <button type="button" id="myBtnWeather"  class="btn btn-success">Country Weather</button>
+                &nbsp;
+                <button type="button" id ="myBtnWiki"  class="btn btn-primary">Wikipidia</button>
+               
             </div>
-            <div class="navbar-nav ms-auto">              	
-                <a href="#" class="nav-item nav-link">Login</a>
-              	<a href="#" class="nav-item nav-link">Register</a>
-            </div>
+           
         </div>
     </div>
 </nav>
 <div class="container">
   	<div class="p-5 my-4 bg-light rounded-3">
-        <h1>Select a Country from the list</h1>
+        <h4>Select a Country from the list</h4>
         <p class="lead">Your choosen country from drop down list will be selected on the map below</p>
 
         <div class="m-4">
         
             <div>
-                <select id="sel">
-                    <option value="">-- Select --</option>
+                <select id="sel" class="form-select" aria-label="Default select example">
+                    <option value="">-- Choose Country --</option>
                 </select>
                 
             </div>
-            
+            <div>
+                <input type="hidden" id="countryName" value=""> 
+            </div>
             </div>
     </div>
-    <div class="p-5 my-4 bg-light rounded-3">
+    <div >
         <h1>Map here</h1>
         <p class="lead">Your Current location (Country border) is highlighting  on the map below if you don't select a country from the list above</p>
         
@@ -58,14 +61,23 @@
   
     
     </div>
-    <div class="row g-3">
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+    <div class="modal-header">
+        <span class="close">&times;</span>
+        <h2 id="txtNameHeader"> </h2>
+      </div>
+    <div class="row g-3"  >
+       
         <div class="col-md-6 col-lg-4 col-xl-3">
             <h2>Demographic</h2>
-            <p><strong>Name: </strong><span id="txtName"></span></p><hr class="sideHr">
+                        <p><strong>Name: </strong><span id="txtName"></span></p><hr class="sideHr">
            
                         <p><strong>Languages: </strong><span class="data" id="txtLanguages"></span></p><hr class="sideHr">
                         <p><strong>Currency: </strong><span class="data" id="currency"></span></p><hr class="sideHr">
-                        <p><strong>Flag: </strong></p><img id="flag" src=""><p></p><hr class="sideHr">
+                        <p><strong>Calling Code: </strong><span class="data" id="txtCallCode"></span></p><hr class="sideHr">
                         <p><strong>Population: </strong><span class="data" id="txtPopulation"></span></p>
         </div>
         <div class="col-md-6 col-lg-4 col-xl-3">
@@ -78,37 +90,133 @@
             
         </div>
         <div class="col-md-6 col-lg-4 col-xl-3">
-            <h2>Weather</h2>
+            <h2></h2>
             <div id="label"></div>
-            <p>ghghgh.</p>
-            <p><a href="https://www.tutorialrepublic.com/javascript-tutorial/" target="_blank" class="btn btn-success">Learn More &raquo;</a></p>
+            <p><strong>Flag: </strong></p><img id="flag" src=""><p></p><hr class="sideHr">
+            <p><strong>Borders: </strong><span class="data" id="txtBorders"></span></p><hr class="sideHr">
+            
         </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <h2>Wikipidia info</h2>
-            <p>jhjhjhjh.</p>
-            <p><a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank" class="btn btn-success">Learn More &raquo;</a></p>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <h2>PHP</h2>
-            <p>PHP is the most popular server-side scripting language for creating dynamic web pages. Our PHP tutorials will help you to learn all the features of latest PHP7 scripting language so that you can easily create dynamic websites.</p>
-            <p><a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank" class="btn btn-success">Learn More &raquo;</a></p>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <h2>SQL</h2>
-            <p>SQL is a standard language designed for managing data in relational database management system. Our SQL tutorials will help you to learn the fundamentals of the SQL language so that you can efficiently manage your databases.</p>
-            <p><a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank" class="btn btn-success">Learn More &raquo;</a></p>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <h2>References</h2>
-            <p>Our references section outlines all the standard HTML5 tags and CSS3 properties along with other useful references such as color names and values, character entities, web safe fonts, language codes, HTTP messages, and more.</p>
-            <p><a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank" class="btn btn-success">Learn More &raquo;</a></p>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <h2>FAQ</h2>
-            <p>Our Frequently Asked Questions (FAQ) section is an extensive collection of FAQs that provides quick and working solution of common questions and queries related to web design and development with live demo.</p>
-            <p><a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank" class="btn btn-success">Learn More &raquo;</a></p>
-        </div>
+          
     </div>
+    <div class="modal-footer">
+        <h4>Gazetteer</h4>
+      </div>
+</div>
+</div>
+
+<div id="myModalWeather" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+<div class="modal-header">
+    <span class="closeWeather">&times;</span>
+    <h2>Weather</h2>
+            
+  </div>
+        <div class="p-5 my-4 bg-light rounded-3"  id="WeatherSection">
+            
+        </div>
+        <div class="row g-3">
+        <div class="col-md-6 col-lg-6 col-xl-4">
+            
+         
+            <div id="iconsContainer">
+                <p class="weather" id="day1"></p>
+                <div class="image"><img src="" class="imgClass" id="img1"></div>
+                <p class="desValues" id="day1Des"></p>
+                <p class="minValues" id="day1Min"></p>
+                <p class="maxValues" id="day1Max"></p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6 col-xl-4">
+           
+            <div id="iconsContainer">
+                <p class="weather" id="day2"></p>
+                <div class="image"><img src="" class="imgClass" id="img2"></div>
+                <p class="desValues" id="day2Des"></p>
+                <p class="minValues" id="day2Min"></p>
+                <p class="maxValues" id="day2Max"></p>
+            </div>    
+        </div>
+        <div class="col-md-6 col-lg-6 col-xl-4">
+    
+            <div id="iconsContainer">
+                <p class="weather" id="day3"></p>
+                <div class="image"><img src="" class="imgClass" id="img3"></div>
+                <p class="desValues" id="day3Des"></p>
+                <p class="minValues" id="day3Min"></p>
+                <p class="maxValues" id="day3Max"></p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6 col-xl-4">
+           
+            <div id="iconsContainer">
+                <p class="weather" id="day4"></p>
+                <div class="image"><img src="" class="imgClass" id="img4"></div>
+                <p class="desValues" id="day4Des"></p>
+                <p class="minValues" id="day4Min"></p>
+                <p class="maxValues" id="day4Max"></p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6 col-xl-4">
+          
+            <div id="iconsContainer">
+                <p class="weather" id="day5"></p>
+                <div class="image"><img src="" class="imgClass" id="img5"></div>
+                <p class="desValues" id="day5Des"></p>
+                <p class="minValues" id="day5Min"></p>
+                <p class="maxValues" id="day5Max"></p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6 col-xl-4">
+            <h4></h4>
+            <div id="iconsContainer">
+                <p class="weather" id="day6"></p>
+                <div class="image"><img src="" class="imgClass" id="img6"></div>
+                <p class="desValues" id="day6Des"></p>
+                <p class="minValues" id="day6Min"></p>
+                <p class="maxValues" id="day6Max"></p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6 col-xl-4">
+            <h4></h4>
+            <div id="iconsContainer">
+                <p class="weather" id="day7"></p>
+                <div class="image"><img src="" class="imgClass" id="img7"></div>
+                <p class="desValues" id="day7Des"></p>
+                <p class="minValues" id="day7Min"></p>
+                <p class="maxValues" id="day7Max"></p>
+            </div>
+        </div>
+       
+    </div>
+
+    <div class="modal-footer">
+        <h4>Gazetteer</h4>
+      </div>
+</div>
+</div>
+
+<div id="myModalWiki" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+<div class="modal-header">
+    <span class="closeWiki">&times;</span>
+    <h2>Wikipedia</h2>
+            
+  </div>
+    <div class="p-5 my-4 bg-light rounded-3" >
+        <div id="txtWikiImg"></div>
+        <div id="txtWiki"></div>
+    
+    </div>
+    <div class="modal-footer">
+        <h4>Gazetteer</h4>
+      </div>
+</div>
+</div>
+
     <hr>
     <footer>
         <div class="row">
