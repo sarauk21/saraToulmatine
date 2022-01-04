@@ -13,13 +13,26 @@
     //var_dump($data); // print array
     //print_r($data);
     //echo $data;
-    //echo "*******************";
+   // echo "*******************";
 	
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-	$output['data'] = $data;
+
+	$countryArray = array(); 
+
+	foreach($data as $i => $i_value) {
+        //echo $i;
+
+		$countryArray[$i]['isoCode'] = $i_value['properties']['iso_a2'];
+		$countryArray[$i]['countryName'] = $i_value['properties']['name'];
+		//echo $countryArray[$i]['countryName']; echo "\n";
+        
+    }
+
+	
+	$output['data'] = $countryArray;
 	
 	header('Content-Type: application/json; charset=UTF-8');
 
