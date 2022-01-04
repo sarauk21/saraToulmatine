@@ -46,7 +46,7 @@ $(document).ready(function () {
         data: { "lat": lat, "lng": lng},
         success: function(result) {
 
-            console.log(JSON.stringify(result));
+            //console.log(JSON.stringify(result));
             if (result.status.name == "ok") {
                 //alert(" getReversGeo stat ok js"); 
             $('#txtName').html(result['data']['countryName']);
@@ -104,30 +104,7 @@ $(document).ready(function () {
                       }
            })
       
-       //  wiki info for current location
-       var countryName1 = $("#countryName").val();
-       console.log("********  hiden country name");
-       console.log(countryName1);
-       console.log("********  hiden country name");
-       $.ajax({
-        url: "libs/php/wiki.php",
-        type: 'GET',
-        dataType: 'json',
-        data: {
-          place: countryName1
-        }, 
-        success: function(result) {                  
-           console.log('wiki info', result);      
-             if (result.status.name == "ok") {
-               $('#txtWikiImg').html('<img src=' + result.data.thumbnail.source +'><br>');
-               $('#txtWiki').html('Wikipedia: ' + result.data.extract +'<br>');
-             } 
-          },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
-                      }
-      })
-       
+      
     // draw border on map 
  
            $.ajax({
@@ -136,7 +113,7 @@ $(document).ready(function () {
                dataType: 'json',
                data: {"country": codeCountry},
                success: result2 => {
-                    console.log(JSON.stringify(result2));  
+                    //console.log(JSON.stringify(result2));  
                     if (result2['status']['name'] == "ok") {
                    //L.geoJSON(geojsonFeature).addTo(map);
                        var myStyle = {
@@ -179,7 +156,7 @@ $.ajax({
           //alert(result);
           for (let i = 0; i < result['data'].length; i++) {
            // APPEND OR INSERT DATA TO SELECT ELEMENT.
-           $('#sel').append('<option value="' + result['data'][i]['properties']['iso_a2'] + '">' +result['data'][i]['properties']['name'] + '</option>');
+           $('#sel').append('<option value="' + result['data'][i]['isoCode'] + '">' +result['data'][i]['countryName'] + '</option>');
           }
 
         }
@@ -254,7 +231,7 @@ $('#sel').change(function () {
         dataType: 'json',
         data: {"country": $('#sel').val()},
         success: result2 => {
-           console.log(JSON.stringify(result2));
+           //console.log(JSON.stringify(result2));
            console.log(" i am in geonam f");
            if (result2['status']['name'] == "ok") {
             //L.geoJSON(geojsonFeature).addTo(map);
