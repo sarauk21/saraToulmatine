@@ -123,12 +123,12 @@ $(document).ready(function () {
                         };
 
                         if (border) {
-                            border.remove()
-                           
+                            border.remove()  
                         }
                         border = L.geoJSON(result2['data'], {
                             style: myStyle
                             }).addTo(map);
+                        map.fitBounds(border.getBounds(), { padding : [50,50]});       
                     }
                 }
            })
@@ -247,6 +247,8 @@ $('#sel').change(function () {
                 border = L.geoJSON(result2['data'], {
                     style: myStyle
                    }).addTo(map);
+
+              map.fitBounds(border.getBounds(), { padding : [50,50]});   
                 
             } 
            }
