@@ -26,8 +26,12 @@ var map = L.map('map').setView([0, 0], 2);
     }
 }
 
+
+
+
+
 $(document).ready(function () {
-    var border;
+  var border;
     var lat;
     var lng;
    //       ***************   pick up current location   ***********
@@ -165,6 +169,53 @@ $.ajax({
 
 // SHOW SELECTED VALUE.
 $('#sel').change(function () {
+
+
+//*********************************** */
+   //     Marker Cluster
+   //************************************ */
+   const geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8,
+  };
+    $.ajax({
+        url: 'libs/php/getCountryHospitals.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {"lat":  $('#lat').text(),
+        "lon":  $('#long').text()},
+        success: result => {
+           
+         
+           if (result['status']['name'] == "ok") {
+            console.log(" i am get markers cluster");  
+            console.log(result['data']['lat']);  
+           // alert('hgggggggggggggggggggg');
+             //clear previous map marker group
+             var clusterGroup = L.markerClusterGroup(); 
+             clusterGroup.addlayer(L.marker([result['data']['lat'], result['data']['lng']], ojsonMarkerOptions)).bindPopup("<p>" + result['data']['address'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
+             map.addLayer(clusterGroup);
+
+/*
+          markerCluster.clearLayers();
+          var marker = L.marker([result['data']['lat'], result['data']['lng']]);
+          marker.bindPopup("<p>" + result['data']['address'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
+         
+          //add marker at position i to marker group
+          markerCluster.addLayer(marker);
+          //markerCluster group add to map instance
+          markerCluster.addTo(map);
+*/
+           }}
+   })
+
+
+
+
     //$('#msg').text('Selected Item: ' + this.options[this.selectedIndex].text);
     region = $(this).val();
     //alert(region);
@@ -255,6 +306,7 @@ $('#sel').change(function () {
         }
    })
 
+   
 });
 
 //********************************************************* */
