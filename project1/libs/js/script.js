@@ -27,9 +27,6 @@ var map = L.map('map').setView([0, 0], 2);
 }
 
 
-
-
-
 $(document).ready(function () {
   var border;
     var lat;
@@ -194,22 +191,19 @@ $('#sel').change(function () {
            if (result['status']['name'] == "ok") {
             console.log(" i am get markers cluster");  
             console.log(result['data']['lat']);  
-           // alert('hgggggggggggggggggggg');
-             //clear previous map marker group
-             var clusterGroup = L.markerClusterGroup(); 
-             clusterGroup.addlayer(L.marker([result['data']['lat'], result['data']['lng']], ojsonMarkerOptions)).bindPopup("<p>" + result['data']['address'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
-             map.addLayer(clusterGroup);
 
-/*
-          markerCluster.clearLayers();
-          var marker = L.marker([result['data']['lat'], result['data']['lng']]);
-          marker.bindPopup("<p>" + result['data']['address'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
-         
-          //add marker at position i to marker group
-          markerCluster.addLayer(marker);
-          //markerCluster group add to map instance
-          markerCluster.addTo(map);
-*/
+            var markers = L.markerClusterGroup();
+
+           var marker = L.marker(new L.LatLng(result['data']['lat'], result['data']['lng']), {
+                  title: "Hi"
+                                  });
+           marker.bindPopup("<p>" + result['data']['address'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
+           markers.addLayer(marker);
+
+
+           map.addLayer(markers);
+
+
            }}
    })
 
