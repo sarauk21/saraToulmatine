@@ -31,6 +31,7 @@ $(document).ready(function () {
   var border;
     var lat;
     var lng;
+  
    //       ***************   pick up current location   ***********
 
    navigator.geolocation.getCurrentPosition(position => {
@@ -167,49 +168,6 @@ $.ajax({
 // SHOW SELECTED VALUE.
 $('#sel').change(function () {
 
-
-//*********************************** */
-   //     Marker Cluster
-   //************************************ */
-   const geojsonMarkerOptions = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8,
-  };
-    $.ajax({
-        url: 'libs/php/getCountryHospitals.php',
-        type: 'POST',
-        dataType: 'json',
-        data: {"lat":  $('#lat').text(),
-        "lon":  $('#long').text()},
-        success: result => {
-           
-         
-           if (result['status']['name'] == "ok") {
-            console.log(" i am get markers cluster");  
-            console.log(result['data']['lat']);  
-
-            var markers = L.markerClusterGroup();
-
-           var marker = L.marker(new L.LatLng(result['data']['lat'], result['data']['lng']), {
-                  title: "Hi"
-                                  });
-           marker.bindPopup("<p>" + result['data']['address'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
-           markers.addLayer(marker);
-
-
-           map.addLayer(markers);
-
-
-           }}
-   })
-
-
-
-
     //$('#msg').text('Selected Item: ' + this.options[this.selectedIndex].text);
     region = $(this).val();
     //alert(region);
@@ -251,8 +209,10 @@ $('#sel').change(function () {
            //console.log(" more info insid if ");
          
         $('#txtCallCode').html(result4['data'][0]['callingCodes']);
-        $('#lat').html(result4['data'][0]['latlng'][0]); lat = result4['data'][0]['latlng'][0];
-        $('#long').html(result4['data'][0]['latlng'][1]); lng = result4['data'][0]['latlng'][1];
+        $('#lat').html(result4['data'][0]['latlng'][0]);  
+        latC = result4['data'][0]['latlng'][0];
+        $('#long').html(result4['data'][0]['latlng'][1]);  
+        lngC = result4['data'][0]['latlng'][1];
 
         var curr = "<br>" + result4['data'][0]['currencies'][0]['name'] + "<br>" + result4['data'][0]['currencies'][0]['code'] +
         "<br>" + result4['data'][0]['currencies'][0]['symbol'] ;
@@ -300,6 +260,49 @@ $('#sel').change(function () {
         }
    })
 
+   
+
+//*********************************** */
+   //     Marker Cluster
+   //************************************ */
+   const geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8,
+  };
+    $.ajax({
+        url: 'libs/php/getCountryHospitals.php',
+        type: 'POST',
+        dataType: 'json',
+        data: { "country": $('#sel').val()},
+        success: result => {
+           
+         
+           if (result['status']['name'] == "ok") {
+            console.log(" i get markers cluster");  
+            
+           
+           var markers = L.markerClusterGroup();
+
+           for (let i = 0; i < 50; i++) {
+
+            console.log(result['data'][i]['location']['lng']);
+
+           var marker = L.marker(new L.LatLng(result['data'][i]['location']['lat'], result['data'][i]['location']['lng']), {
+                  title: "Hi"
+                                  });
+           marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
+           markers.addLayer(marker);
+          }
+             
+           map.addLayer(markers);
+
+
+           }}
+   })
    
 });
 
