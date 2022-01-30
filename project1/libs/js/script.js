@@ -81,7 +81,8 @@ $(document).ready(function () {
                    }
                 }
            })
-
+            
+           //************************************************************************** */
              //  get more information
             $.ajax({
                url: 'libs/php/getCountryMoreInfo.php',
@@ -134,7 +135,44 @@ $(document).ready(function () {
                     }
                 }
            })
+           
+           
+//*********************************** */
+   //     Marker Cluster     ****
+   //************************************ */
+   const geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8,
+  };
+    $.ajax({
+        url: 'libs/php/getCountryHospitals.php',
+        type: 'GET',
+        dataType: 'json',
+        data: { "country": codeCountry},
+        
+        success: result => {
+           console.log(codeCountry);
+          console.log(" i got data back from triposo IPA to do markers cluster");  
+           if (result['status']['name'] == "ok") {
+            //console.log(" i get markers cluster");  
+           var markers = L.markerClusterGroup();
 
+           for (let i = 0; i < result['data'].length; i++) {
+            //console.log(result['data'][i]['coordinates']['latitude']);
+             var namePlace = result['data'][i]['name'];
+           var marker = L.marker(new L.LatLng(result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']), {
+                  title: namePlace
+                                  });
+           marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>");
+           markers.addLayer(marker);
+          }   
+           map.addLayer(markers);
+           }}
+   })
             }  // end if 
 
         }
@@ -237,7 +275,7 @@ $('#sel').change(function () {
         data: {"country": $('#sel').val()},
         success: result2 => {
            //console.log(JSON.stringify(result2));
-           console.log(" i am in geonam f");
+           console.log(" i am going to draw borders");
            if (result2['status']['name'] == "ok") {
             //L.geoJSON(geojsonFeature).addTo(map);
             var myStyle = {
@@ -275,32 +313,27 @@ $('#sel').change(function () {
   };
     $.ajax({
         url: 'libs/php/getCountryHospitals.php',
-        type: 'POST',
+        type: 'GET',
         dataType: 'json',
         data: { "country": $('#sel').val()},
+        
         success: result => {
-           
-         
+           console.log($('#sel').val());
+          console.log(" i got data back from triposo IPA to do markers cluster");  
            if (result['status']['name'] == "ok") {
-            console.log(" i get markers cluster");  
-            
-           
+            //console.log(" i get markers cluster");  
            var markers = L.markerClusterGroup();
 
-           for (let i = 0; i < 50; i++) {
-
-            console.log(result['data'][i]['location']['lng']);
-
-           var marker = L.marker(new L.LatLng(result['data'][i]['location']['lat'], result['data'][i]['location']['lng']), {
-                  title: "Hi"
+           for (let i = 0; i < result['data'].length; i++) {
+            //console.log(result['data'][i]['coordinates']['latitude']);
+             var namePlace = result['data'][i]['name'];
+           var marker = L.marker(new L.LatLng(result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']), {
+                  title: namePlace
                                   });
-           marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + + "<p/>" + "<p>" + + "</p>");
+           marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>");
            markers.addLayer(marker);
-          }
-             
+          }   
            map.addLayer(markers);
-
-
            }}
    })
    
