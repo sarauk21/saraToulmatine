@@ -29,8 +29,9 @@ var map = L.map('map').setView([0, 0], 2);
 
 $(document).ready(function () {
   var border;
-    var lat;
-    var lng;
+  var markers;
+  var lat;
+  var lng;
   
    //       ***************   pick up current location   ***********
 
@@ -321,11 +322,14 @@ $('#sel').change(function () {
            console.log($('#sel').val());
           console.log(" i got data back from triposo IPA to do markers cluster");  
            if (result['status']['name'] == "ok") {
-            //console.log(" i get markers cluster");  
-           var markers = L.markerClusterGroup();
-
+            //console.log(" i get markers cluster");
+          
+            //markers.clearLayers();  
+            markers = L.markerClusterGroup();
+            markers.clearLayers();
            for (let i = 0; i < result['data'].length; i++) {
             //console.log(result['data'][i]['coordinates']['latitude']);
+      
              var namePlace = result['data'][i]['name'];
            var marker = L.marker(new L.LatLng(result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']), {
                   title: namePlace
