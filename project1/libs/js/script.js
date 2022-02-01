@@ -39,7 +39,7 @@ $(document).ready(function () {
     lat = position.coords.latitude;
     lng = position.coords.longitude;
     console.log(lat);console.log(lng);
-    var marker = L.marker([lat, lng]).addTo(map);
+    //var marker = L.marker([lat, lng]).addTo(map);
     //alert("87877777777777777777999999999999999999999999");
     // get country of current lat long  location
     $.ajax({
@@ -323,10 +323,14 @@ $('#sel').change(function () {
           console.log(" i got data back from triposo IPA to do markers cluster");  
            if (result['status']['name'] == "ok") {
             //console.log(" i get markers cluster");
+            if (markers && map.hasLayer(markers)) {
+              console.log(" i  333333333");
+              map.removeLayer(markers);
+            }
           
             //markers.clearLayers();  
             markers = L.markerClusterGroup();
-            markers.clearLayers();
+           
            for (let i = 0; i < result['data'].length; i++) {
             //console.log(result['data'][i]['coordinates']['latitude']);
       
