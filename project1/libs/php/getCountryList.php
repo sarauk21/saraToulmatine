@@ -30,8 +30,19 @@
 		//echo $countryArray[$i]['countryName']; echo "\n";
         
     }
-
 	
+    function build_sorter($key) {
+		return function ($a, $b) use ($key) {
+			return strnatcmp($a[$key], $b[$key]);
+		};
+	}
+	
+	usort($countryArray, build_sorter('countryName'));
+	/*
+	foreach ($countryArray as $item) {
+		echo $item['isoCode'] . ', ' . $item['countryName'] . "\n";
+	}
+    */
 	$output['data'] = $countryArray;
 	
 	header('Content-Type: application/json; charset=UTF-8');
