@@ -29,7 +29,7 @@ var map = L.map('map').setView([0, 0], 2);
 
 $(document).ready(function () {
   var border;
-  var markers;
+  var markers, markers2;
   var lat;
   var lng;
   
@@ -150,7 +150,7 @@ $(document).ready(function () {
     fillOpacity: 0.8,
   };
     $.ajax({
-        url: 'libs/php/getCountryHospitals.php',
+        url: 'libs/php/getCountryPlaceIntrest.php',
         type: 'GET',
         dataType: 'json',
         data: { "country": codeCountry},
@@ -174,6 +174,45 @@ $(document).ready(function () {
            map.addLayer(markers);
            }}
    })
+
+           /********* marker clusters countries places of intrest     sightseeing */
+   /******************                                   */
+
+   $.ajax({
+    url: 'libs/php/getCountrySightseeing.php',
+    type: 'GET',
+    dataType: 'json',
+    data: { "country":  codeCountry},
+    
+    success: result => {
+       console.log($('#sel').val());
+      console.log(" Sightseeing i got data back from triposo IPA to do markers cluster");  
+       if (result['status']['name'] == "ok") {
+        //console.log(" Sightseeing i get markers cluster");
+        if (markers2 && map.hasLayer(markers2)) {
+          console.log(" i  333333333 Sightseeing");
+          map.removeLayer(markers2);
+        }
+      
+        //markers.clearLayers();  
+        markers2 = L.markerClusterGroup();
+       
+        for (let j = 0; j < result['data'].length; j++) {
+      
+          var namePlace2 = result['data'][j]['name'];
+        var marker2 = L.marker(new L.LatLng(result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']), {
+               title: namePlace2
+                               });
+                               
+        marker2.bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>");
+        markers2.addLayer(marker2);
+       }   
+
+        map.addLayer(markers2);
+       }}
+})
+/***end place of intrest sightseeing*/
+
             }  // end if 
 
         }
@@ -313,7 +352,7 @@ $('#sel').change(function () {
     fillOpacity: 0.8,
   };
     $.ajax({
-        url: 'libs/php/getCountryHospitals.php',
+        url: 'libs/php/getCountryPlaceIntrest.php',
         type: 'GET',
         dataType: 'json',
         data: { "country": $('#sel').val()},
@@ -324,7 +363,7 @@ $('#sel').change(function () {
            if (result['status']['name'] == "ok") {
             //console.log(" i get markers cluster");
             if (markers && map.hasLayer(markers)) {
-              console.log(" i  333333333");
+              console.log(" i   3333333  PlaceIntrest");
               map.removeLayer(markers);
             }
           
@@ -344,6 +383,44 @@ $('#sel').change(function () {
            map.addLayer(markers);
            }}
    })
+
+   /********* marker clusters countries places of intrest     sightseeing */
+   /******************                                   */
+
+   $.ajax({
+    url: 'libs/php/getCountrySightseeing.php',
+    type: 'GET',
+    dataType: 'json',
+    data: { "country": $('#sel').val()},
+    
+    success: result => {
+       console.log($('#sel').val());
+      console.log(" Sightseeing i got data back from triposo IPA to do markers cluster");  
+       if (result['status']['name'] == "ok") {
+        //console.log(" Sightseeing i get markers cluster");
+        if (markers2 && map.hasLayer(markers2)) {
+          console.log(" i  333333333 Sightseeing");
+          map.removeLayer(markers2);
+        }
+      
+        //markers.clearLayers();  
+        markers2 = L.markerClusterGroup();
+       
+        for (let j = 0; j < result['data'].length; j++) {
+      
+          var namePlace2 = result['data'][j]['name'];
+        var marker2 = L.marker(new L.LatLng(result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']), {
+               title: namePlace2
+                               });
+                               
+        marker2.bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>");
+        markers2.addLayer(marker2);
+       }   
+
+        map.addLayer(markers2);
+       }}
+})
+/***end place of intrest sightseeing*/
    
 });
 
