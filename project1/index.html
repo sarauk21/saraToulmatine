@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gazetteer Responsive Layout Example</title>
+<title>  Gazetteer </title>
 <link rel="stylesheet" href="libs/css/bootstrap.min.css">
 <link rel="stylesheet" href="leaflet/leaflet.css" />
 
@@ -11,12 +11,20 @@
 <link rel="stylesheet" href="dist/MarkerCluster.Default.css" />
 
 <link rel="stylesheet" href="libs/css/style.css" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+<link rel="manifest" href="favicon_io/site.webmanifest">
   <!-- 
 <script src="js/bootstrap.bundle.min.js"></script>
   -->
 
 </head>
 <body>
+
+    <div id="loader" class="center">  ...  Loading ...</div>    
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a href="./" class="navbar-brand">Gazetteer</a>
@@ -37,9 +45,7 @@
                     <option value="" >-- Choose Country --</option>
                 </select>
             </div>
-            <div>
-                
-                
+            <div>   
             </div>
             <div>
                 <input type="hidden" id="countryName" value=""> 
@@ -67,7 +73,7 @@
         <div class="col-md-6 col-lg-4 col-xl-3">
             <h2>Demographic</h2>
                         <p><strong>Name: </strong><span id="txtName"></span></p><hr class="sideHr">
-           
+                        <input type="hidden" id="countryIsoCode" value="" />
                         <p><strong>Languages: </strong><span class="data" id="txtLanguages"></span></p><hr class="sideHr">
                         <p><strong>Currency: </strong><span class="data" id="currency"></span></p><hr class="sideHr">
                         <p><strong>Calling Code: </strong><span class="data" id="txtCallCode"></span></p><hr class="sideHr">
