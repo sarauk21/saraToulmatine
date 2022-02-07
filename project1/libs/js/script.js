@@ -26,12 +26,30 @@ var map = L.map('map').setView([0, 0], 2);
     }
 }
 
-
 $(document).ready(function () {
   var border;
+  var codeCountry;
   var markers, markers2;
   var lat;
   var lng;
+
+  //  Preloding script
+
+document.onreadystatechange = function() {
+  if (document.readyState !== "complete") {
+    console.log("loaging");
+      document.querySelector(
+        "body").style.visibility = "hidden";
+      document.querySelector(
+        "#loader").style.visibility = "visible";
+  } else {
+    console.log("Ready");
+      document.querySelector(
+        "#loader").style.display = "none";
+      document.querySelector(
+        "body").style.visibility = "visible";
+  }
+};
   
    //       ***************   pick up current location   ***********
 
@@ -42,6 +60,26 @@ $(document).ready(function () {
     //var marker = L.marker([lat, lng]).addTo(map);
     //alert("87877777777777777777999999999999999999999999");
     // get country of current lat long  location
+
+    /***************************************** */
+
+    var GisoCode = $.ajax({
+      url: 'libs/php/getReversGeo.php',
+      type: 'POST',
+      dataType: 'json',
+      data: { "lat": lat, "lng": lng},
+      async:false,
+      success: function(result) {
+          if (result.status.name == "ok") {
+            isoCode = result['data']['countryCode'];
+         return isoCode;
+          } }
+        } ).responseText;
+
+        //console.log(GisoCode);
+        //console.log("mmmmmmmmmmmmmmmmmmmmmmmmm");
+
+    /**************************************** */
     $.ajax({
         url: 'libs/php/getReversGeo.php',
         type: 'POST',
@@ -54,7 +92,7 @@ $(document).ready(function () {
                 //alert(" getReversGeo stat ok js"); 
             $('#txtName').html(result['data']['countryName']);
            
-            codeCountry = result['data']['countryCode'];
+           var codeCountry = result['data']['countryCode'];
             //alert(codeCountry);
             console.log(codeCountry);
             $.ajax({
@@ -68,7 +106,7 @@ $(document).ready(function () {
                    //console.log(" i am in geonam f");
                    if (result['status']['name'] == "ok") {   
                        $('#countryName').val(result['data'][0]['countryName']);
-
+                       $('#countryIsoCode').val(result['data'][0]['countryCode']);
                        $('#txtNameHeader').html(result['data'][0]['countryName']);
                        $('#txtName').html(result['data'][0]['countryName']);
                        $('#txtContinent').html(result['data'][0]['continent']);
@@ -199,7 +237,7 @@ $(document).ready(function () {
        
         for (let j = 0; j < result['data'].length; j++) {
       
-          var namePlace2 = result['data'][j]['name'];
+        var namePlace2 = result['data'][j]['name'];
         var marker2 = L.marker(new L.LatLng(result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']), {
                title: namePlace2
                                });
@@ -222,6 +260,7 @@ $(document).ready(function () {
 }) //end navigator
 
       //       ***************   Drop down  list of country   ***********
+      var adds = $('#countryIsoCode').val();
 $.ajax({
     url: 'libs/php/getCountryList.php',
     type: 'POST',
@@ -232,13 +271,26 @@ $.ajax({
        //console.log(" i am in geonam f");
      
         if (result['status']['name'] == "ok") {
+
+          console.log("*********************");
+          console.log(adds);
+
            //alert("55555555555");
           //alert(result);
           for (let i = 0; i < result['data'].length; i++) {
            // APPEND OR INSERT DATA TO SELECT ELEMENT.
-           $('#sel').append('<option value="' + result['data'][i]['isoCode'] + '">' +result['data'][i]['countryName'] + '</option>');
+           if (result['data'][i]['isoCode'] == "DZ") {
+            $('#sel').append('<option value="' + result['data'][i]['isoCode'] + '" selected = "selected">' + result['data'][i]['countryName'] + '</option>');
+           } else {
+           $('#sel').append('<option value="' + result['data'][i]['isoCode'] + '">' + result['data'][i]['countryName'] + '</option>');
           }
-
+           /*if (result['data'][i]['isoCode'] == "DZ") {  $(this).prop('selected', true); 
+          console.log("selected ssssss ggggggggggggg"); }
+           */
+          } //for end
+          //console.log(result['data'][i]['isoCode']);
+          
+          
         }
     }
 })
