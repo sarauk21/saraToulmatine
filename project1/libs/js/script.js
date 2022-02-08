@@ -29,7 +29,7 @@ var map = L.map('map').setView([0, 0], 2);
 $(document).ready(function () {
   var border;
   var codeCountry;
-  var markers, markers2;
+  var markers, markers2, markers3;
   var lat;
   var lng;
 
@@ -57,44 +57,25 @@ document.onreadystatechange = function() {
     lat = position.coords.latitude;
     lng = position.coords.longitude;
     console.log(lat);console.log(lng);
-    //var marker = L.marker([lat, lng]).addTo(map);
-    //alert("87877777777777777777999999999999999999999999");
+
     // get country of current lat long  location
 
-    /***************************************** */
-
-    var GisoCode = $.ajax({
-      url: 'libs/php/getReversGeo.php',
-      type: 'POST',
-      dataType: 'json',
-      data: { "lat": lat, "lng": lng},
-      async:false,
-      success: function(result) {
-          if (result.status.name == "ok") {
-            isoCode = result['data']['countryCode'];
-         return isoCode;
-          } }
-        } ).responseText;
-
-        //console.log(GisoCode);
-        //console.log("mmmmmmmmmmmmmmmmmmmmmmmmm");
-
-    /**************************************** */
     $.ajax({
         url: 'libs/php/getReversGeo.php',
         type: 'POST',
         dataType: 'json',
         data: { "lat": lat, "lng": lng},
         success: function(result) {
-
-            //console.log(JSON.stringify(result));
             if (result.status.name == "ok") {
                 //alert(" getReversGeo stat ok js"); 
             $('#txtName').html(result['data']['countryName']);
            
            var codeCountry = result['data']['countryCode'];
             //alert(codeCountry);
+            console.log("==========================");
             console.log(codeCountry);
+            $('#sel').val(codeCountry).change();
+            console.log("==========================");
             $.ajax({
                 url: 'libs/php/getCountryInfo.php',
                 type: 'POST',
@@ -195,7 +176,7 @@ document.onreadystatechange = function() {
         
         success: result => {
            console.log(codeCountry);
-          console.log(" i got data back from triposo IPA to do markers cluster");  
+          console.log(" places of intrest i got data back from triposo IPA to do markers cluster");  
            if (result['status']['name'] == "ok") {
             //console.log(" i get markers cluster");  
            var markers = L.markerClusterGroup();
@@ -213,7 +194,7 @@ document.onreadystatechange = function() {
            }}
    })
 
-           /********* marker clusters countries places of intrest     sightseeing */
+           /********* marker clusters countries     sightseeing */
    /******************                                   */
 
    $.ajax({
@@ -251,6 +232,44 @@ document.onreadystatechange = function() {
 })
 /***end place of intrest sightseeing*/
 
+           /********* marker clusters countries Cities */
+   /******************                                   */
+
+   $.ajax({
+    url: 'libs/php/getCountryCities.php',
+    type: 'GET',
+    dataType: 'json',
+    data: { "country":  codeCountry},
+    
+    success: result => {
+       console.log($('#sel').val());
+      console.log(" cities i got data back from triposo IPA to do markers cluster");  
+       if (result['status']['name'] == "ok") {
+        //console.log(" Sightseeing i get markers cluster");
+        if (markers3 && map.hasLayer(markers3)) {
+          console.log(" i  333333333 Cities");
+          map.removeLayer(markers3);
+        }
+      
+        //markers.clearLayers();  
+        markers3 = L.markerClusterGroup();
+       
+        for (let k = 0; k < result['data'].length; k++) {
+      
+        var namePlace3 = result['data'][k]['name'];
+        var marker3 = L.marker(new L.LatLng(result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']), {
+               title: namePlace3
+                               });
+                               
+        marker3.bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>");
+        markers3.addLayer(marker3);
+       }   
+
+        map.addLayer(markers3);
+       }}
+})
+/***end place of intrest Cities    */
+
             }  // end if 
 
         }
@@ -271,25 +290,11 @@ $.ajax({
        //console.log(" i am in geonam f");
      
         if (result['status']['name'] == "ok") {
-
-          console.log("*********************");
-          console.log(adds);
-
-           //alert("55555555555");
-          //alert(result);
           for (let i = 0; i < result['data'].length; i++) {
-           // APPEND OR INSERT DATA TO SELECT ELEMENT.
-           if (result['data'][i]['isoCode'] == "DZ") {
-            $('#sel').append('<option value="' + result['data'][i]['isoCode'] + '" selected = "selected">' + result['data'][i]['countryName'] + '</option>');
-           } else {
-           $('#sel').append('<option value="' + result['data'][i]['isoCode'] + '">' + result['data'][i]['countryName'] + '</option>');
-          }
-           /*if (result['data'][i]['isoCode'] == "DZ") {  $(this).prop('selected', true); 
-          console.log("selected ssssss ggggggggggggg"); }
-           */
-          } //for end
-          //console.log(result['data'][i]['isoCode']);
           
+           $('#sel').append('<option value="' + result['data'][i]['isoCode'] + '">' + result['data'][i]['countryName'] + '</option>');
+        
+          } //for end
           
         }
     }
@@ -473,6 +478,44 @@ $('#sel').change(function () {
        }}
 })
 /***end place of intrest sightseeing*/
+
+
+           /********* marker clusters countries Cities */
+   /******************                                   */
+
+   $.ajax({
+    url: 'libs/php/getCountryCities.php',
+    type: 'GET',
+    dataType: 'json',
+    data: { "country":  $('#sel').val()},
+    
+    success: result => {
+       console.log($('#sel').val());
+      console.log(" cities i got data back from triposo IPA to do markers cluster");  
+       if (result['status']['name'] == "ok") {
+        //console.log(" Sightseeing i get markers cluster");
+        if (markers3 && map.hasLayer(markers3)) {
+          console.log(" i  333333333 Cities");
+          map.removeLayer(markers3);
+        }
+        //markers.clearLayers();  
+        markers3 = L.markerClusterGroup();
+       
+        for (let k = 0; k < result['data'].length; k++) {
+      
+        var namePlace3 = result['data'][k]['name'];
+        var marker3 = L.marker(new L.LatLng(result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']), {
+               title: namePlace3
+                               });
+                               
+        marker3.bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>");
+        markers3.addLayer(marker3);
+       }   
+
+        map.addLayer(markers3);
+       }}
+})
+/***end place of intrest Cities    */
    
 });
 
