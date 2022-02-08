@@ -1,14 +1,18 @@
 <?php
 	// remove for production
+//die("in country info  mmmmmmmmmmmmm");
+//die($_REQUEST['country']);
+
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 
 $executionStartTime = microtime(true);
 
 if ($_REQUEST['country'] == "GB") { $country2 = "uk";} else {$country2 = strtolower($_REQUEST['country']);}
-//echo $country2;
 
-$url='https://www.triposo.com/api/20220104/poi.json?countrycode='.$country2.'&tag_labels=sightseeing&count=50&fields=id,name,tag_labels,coordinates&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
+$url='https://www.triposo.com/api/20220104/location.json?countrycode='.$country2.'&tag_labels=city&count=50&fields=id,name,score,snippet,coordinates&order_by=-score&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
+
+
 //echo $url;
     $ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
