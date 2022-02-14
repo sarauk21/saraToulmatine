@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>  Gazetteer </title>
 <link rel="stylesheet" href="libs/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <link rel="stylesheet" href="leaflet/leaflet.css" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">
 
 <link rel="stylesheet" href="dist/MarkerCluster.css" />
 <link rel="stylesheet" href="dist/MarkerCluster.Default.css" />
@@ -33,13 +38,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav">
-               <button type="button" class="btn btn-secondary"> <a href="./index.html" class="nav-item nav-link active">Home</a></button>
-               &nbsp; 
-               <button type="button" id="myBtn" class="btn btn-info">Country information</button>
-                &nbsp;
-                <button type="button" id="myBtnWeather"  class="btn btn-success">Country Weather</button>
-                &nbsp;
-                <button type="button" id ="myBtnWiki"  class="btn btn-primary">Wikipidia</button>
+              
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <select id="sel" class="form-select" aria-label="Default select example">
                     <option value="" >-- Choose Country --</option>
@@ -56,7 +55,6 @@
 </nav>
 <div>
     <div >
-        <hr>
         <div id="map"></div>
   
     </div>
@@ -66,12 +64,12 @@
         <div class="modal-content">
     <div class="modal-header">
         <span class="close">&times;</span>
-        <h2 id="txtNameHeader"> </h2>
+        <h4 id="txtNameHeader"> </h4>
       </div>
     <div class="row g-3"  >
        
         <div class="col-md-6 col-lg-4 col-xl-3">
-            <h2>Demographic</h2>
+            <h3>Demographic</h3>
                         <p><strong>Name: </strong><span id="txtName"></span></p><hr class="sideHr">
                         
                         <p><strong>Languages: </strong><span class="data" id="txtLanguages"></span></p><hr class="sideHr">
@@ -91,11 +89,17 @@
         <div class="col-md-6 col-lg-4 col-xl-3">
             <h2></h2>
             <div id="label"></div>
-            <p><strong>Flag: </strong></p><img id="flag" src=""><p></p><hr class="sideHr">
             <p><strong>Borders: </strong><span class="data" id="txtBorders"></span></p><hr class="sideHr">
             
         </div>
           
+    </div>
+    <div class="row g-3"  >
+        <div class="col-md-6 col-lg-4 col-xl-3">
+            <h2></h2>
+            <div id="label"></div>
+            <p ><strong>Flag: </strong></p><img id="flag" src="" width="192" height="150"><p></p><hr class="sideHr">
+        </div>
     </div>
     <div class="modal-footer">
         <h4>Gazetteer</h4>
@@ -109,7 +113,8 @@
     <div class="modal-content">
 <div class="modal-header">
     <span class="closeWeather">&times;</span>
-    <h2>Weather</h2>
+    <h4>Weather</h4>
+    <span id="txtNameCountry"></span>
             
   </div>
         <div class="p-5 my-4 bg-light rounded-3"  id="WeatherSection">
@@ -202,7 +207,7 @@
     <div class="modal-content">
 <div class="modal-header">
     <span class="closeWiki">&times;</span>
-    <h2>Wikipedia</h2>
+    <h5>Wikipedia</h5>
             
   </div>
     <div class="p-5 my-4 bg-light rounded-3" >
@@ -215,8 +220,6 @@
       </div>
 </div>
 </div>
-
-    <hr>
     <footer>
         <div class="row">
            
@@ -232,8 +235,10 @@
 <script src="libs/js/bootstrap.min.js"></script>
 <script src="libs/js/bootstrap.bundle.min.js"></script>
 <script src="leaflet/leaflet.js"></script>
-<script src="dist/leaflet.markercluster.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>   
+
+<script src="dist/leaflet.markercluster.js"></script>
 
     <script src="libs/js/GeojsonData.js"></script>
    
