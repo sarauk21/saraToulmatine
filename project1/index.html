@@ -58,17 +58,22 @@
         <div id="map"></div>
   
     </div>
-    <div id="myModal" class="modal">
+  
 
-        <!-- Modal content -->
-        <div class="modal-content">
-    <div class="modal-header">
-        <span class="close">&times;</span>
-        <h4 id="txtNameHeader"> </h4>
-      </div>
+    <div  id="myModal" class="modal fade" tabindex="-1" 
+    >
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="txtNameHeader"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
     <div class="row g-3"  >
        
         <div class="col-md-6 col-lg-4 col-xl-3">
+            <h4 id="txtNameHeader"> </h4>
             <h3>Demographic</h3>
                         <p><strong>Name: </strong><span id="txtName"></span></p><hr class="sideHr">
                         
@@ -101,29 +106,33 @@
             <p ><strong>Flag: </strong></p><img id="flag" src="" width="192" height="150"><p></p><hr class="sideHr">
         </div>
     </div>
-    <div class="modal-footer">
-        <h4>Gazetteer</h4>
-      </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>
+
+    </div>
 </div>
 </div>
 
-<div id="myModalWeather" class="modal">
 
-    <!-- Modal content -->
-    <div class="modal-content">
-<div class="modal-header">
-    <span class="closeWeather">&times;</span>
-    <h4>Weather</h4>
-    <span id="txtNameCountry"></span>
+<div id="myModalWeather" class="modal fade" tabindex="-1" >
+<div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="txtNameCountry"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
             
-  </div>
-        <div class="p-5 my-4 bg-light rounded-3"  id="WeatherSection">
-            
+  
+        <div class="p-1 my-1 bg-light rounded-1" >
+           <h4> Weather  </h4>
         </div>
         <div class="row g-3">
         <div class="col-md-6 col-lg-6 col-xl-4">
             
-         
             <div id="iconsContainer">
                 <p class="weather" id="day1"></p>
                 <div class="image"><img src="" class="imgClass" id="img1"></div>
@@ -194,37 +203,37 @@
         </div>
        
     </div>
-
+</div>
     <div class="modal-footer">
-        <h4>Gazetteer</h4>
-      </div>
-</div>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+    
+        </div>
+    </div>
 </div>
 
-<div id="myModalWiki" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-<div class="modal-header">
-    <span class="closeWiki">&times;</span>
-    <h5>Wikipedia</h5>
-            
-  </div>
+<div id="myModalWiki" class="modal fade" tabindex="-1" >
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="txtNameCountry">Wikipedia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+  
     <div class="p-5 my-4 bg-light rounded-3" >
         <div id="txtWikiImg"></div>
         <div id="txtWiki"></div>
     
     </div>
+</div>
     <div class="modal-footer">
-        <h4>Gazetteer</h4>
-      </div>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+    </div>
 </div>
 </div>
-    <footer>
-        <div class="row">
-           
-        </div>
-    </footer>
+    
 </div>
 
 
