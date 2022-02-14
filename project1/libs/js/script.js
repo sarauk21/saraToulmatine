@@ -11,6 +11,106 @@ var map = L.map('map').setView([0, 0], 2);
 
   //var marker = L.marker([51.5, -0.09]).addTo(map);
 
+  //******Click country information button
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+//  ***   END country information button
+
+
+//******Click country Weather button
+// Get the modal
+var modalWeather = document.getElementById("myModalWeather");
+
+// Get the <span> element that closes the modal
+var spanWeather = document.getElementsByClassName("closeWeather")[0];
+
+// When the user clicks on <span> (x), close the modal
+spanWeather.onclick = function() {
+  modalWeather.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modalWeather) {
+    modalWeather.style.display = "none";
+  }
+}
+
+//  ***   END country Weather button
+
+//******Click country Wikipedia button
+
+// Get the modal
+var modalWiki = document.getElementById("myModalWiki");
+
+// Get the <span> element that closes the modal
+var spanWiki = document.getElementsByClassName("closeWiki")[0];
+
+// When the user clicks on <span> (x), close the modal
+spanWiki.onclick = function() {
+  modalWiki.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modalWiki) {
+    modalwiki.style.display = "none";
+  }
+}
+
+  //  ******          NavBar Menue EasyButtons      ********
+  var buttons = []; // NOTE: use a separate array to collect the buttons
+  var fileTime = ['Information', 'Wiki', 'Weather'];
+  for (var i = 0; i < fileTime.length; i++) {
+    (function() {
+      var time = String(fileTime[i])
+      var mybutton = L.easyButton({
+        id: time,
+        states: [{
+          icon: '<div >' + time + '</div>',
+          onClick: function(e) {
+            //alert(time)
+            if (time == 'Information') {
+            // When the user clicks the button, open the modal 
+            modal.style.display = "block";
+          } else if (time == 'Wiki' ) {
+            // When the user clicks the button, open the modal 
+            modalWiki.style.display = "block";
+          } else if (time == 'Weather' ) {
+            // When the user clicks the button, open the modal 
+            modalWeather.style.display = "block";
+          } else { } 
+          }
+        }]
+      });
+      buttons.push(mybutton) // NOTE: add to the buttons array instead of the map
+    })();
+  }
+  
+  var bar = L.easyBar(buttons, {
+    id: 'myeasybar'
+  }); // NOTE: create an easyBar 
+  bar.addTo(map); // NOTE: add the bar to the map
+  
+  //  ******        END   NavBar Menue EasyButtons      ********
+
   function createDate(dt, type) {
     var day = new Date(dt * 1000);
     if (type == "long") {
@@ -89,6 +189,8 @@ document.onreadystatechange = function() {
                        $('#countryName').val(result['data'][0]['countryName']);
                        $('#countryIsoCode').val(result['data'][0]['countryCode']);
                        $('#txtNameHeader').html(result['data'][0]['countryName']);
+                       $('#txtNameCountry').html(result['data'][0]['countryName']);
+                      
                        $('#txtName').html(result['data'][0]['countryName']);
                        $('#txtContinent').html(result['data'][0]['continent']);
                        $('#txtCapital').html(result['data'][0]['capital']);
@@ -299,12 +401,69 @@ $.ajax({
         }
     }
 })
+/*   **************************************************************/
+
+/**  ************************************************************ */
 
 // SHOW SELECTED VALUE.
 $('#sel').change(function () {
 
-    //$('#msg').text('Selected Item: ' + this.options[this.selectedIndex].text);
     region = $(this).val();
+/***  *************************************************** */
+$.ajax({
+  url: 'libs/php/getCountryLatLng.php',
+  type: 'post',
+  dataType: 'json',
+  data: { "country": region},
+  success: result => {
+    if (result['status']['name'] == "ok") {
+      console.log(" i got lat lng of selected country");
+      latitude = result['data']['lat'];
+      Lngtitude = result['data']['lng'];
+      console.log(latitude);
+      console.log(Lngtitude);
+
+//********************************************************* */
+//      Weather
+//********************************************************* */
+//$('#myBtnWeather').click(function() {
+  
+    $.ajax({
+      url: 'libs/php/getWeather.php',
+      type: 'POST',
+      dataType: 'json',
+      data: {"lat":  latitude,
+      "lon":  Lngtitude},
+      success: result7 => {
+         //console.log(JSON.stringify(result));
+         if (result7['status']['name'] == "ok") {
+          console.log(" i get weather ");
+               //Getting the min and max values for each day
+              for(i = 0; i<7; i++){
+          
+                  $('#day'+ (i+1) + 'Min').html( Number(result7['data'].list[i].main.temp_min - 273.15).toFixed(1)+ '°');
+                  $('#day'+ (i+1) + 'Max').html( Number(result7['data'].list[i].main.temp_max - 273.15).toFixed(1)+ '°');
+          
+                  $('#img'+ (i+1) ).attr("src", "http://openweathermap.org/img/wn/"+ result7['data'].list[i].weather[0].icon + '.png');
+                  $('#day'+ (i+1) + 'Des').html( result7['data'].list[i].weather[0].main +'<br>'
+                   + result7['data'].list[i].weather[0].description);
+                  
+                   $('#day'+ (i+1)).html(createDate(result7['data'].list[i].dt, "long") );
+                   
+                   //var day = new Date(result7['data'].list[i].dt*1000);
+                   //$('#day'+ (i+1)).html(day.toDateString());  // 'Fri Jan 15 2021'
+  
+              } 
+         }
+      }
+  })
+
+    }
+
+  }
+})
+
+/*      ********************************************** */
     //alert(region);
     // get country info
     $.ajax({
@@ -517,52 +676,17 @@ $('#sel').change(function () {
 })
 /***end place of intrest Cities    */
    
-});
 
-//********************************************************* */
-//      Weather
-//********************************************************* */
-$('#myBtnWeather').click(function() {
-  
-    $.ajax({
-        url: 'libs/php/getWeather.php',
-        type: 'POST',
-        dataType: 'json',
-        data: {"lat":  $('#lat').text(),
-        "lon":  $('#long').text()},
-        success: result7 => {
-           //console.log(JSON.stringify(result));
-           console.log(" i am in weather ajax");console.log( $('#lat').text());console.log( $('#lon').text());
-           console.log("bbbbb");console.log(lat);console.log(lng);
-           if (result7['status']['name'] == "ok") {
-    
-                 //Getting the min and max values for each day
-                for(i = 0; i<7; i++){
-            
-                    $('#day'+ (i+1) + 'Min').html( Number(result7['data'].list[i].main.temp_min - 273.15).toFixed(1)+ '°');
-                    $('#day'+ (i+1) + 'Max').html( Number(result7['data'].list[i].main.temp_max - 273.15).toFixed(1)+ '°');
-            
-                    $('#img'+ (i+1) ).attr("src", "http://openweathermap.org/img/wn/"+ result7['data'].list[i].weather[0].icon + '.png');
-                    $('#day'+ (i+1) + 'Des').html( result7['data'].list[i].weather[0].main +'<br>'
-                     + result7['data'].list[i].weather[0].description);
-                    
-                     $('#day'+ (i+1)).html(createDate(result7['data'].list[i].dt, "long") );
-                     
-                     //var day = new Date(result7['data'].list[i].dt*1000);
-                     //$('#day'+ (i+1)).html(day.toDateString());  // 'Fri Jan 15 2021'
-    
-                } 
-           }
-        }
-    })
-})
+
+
+//})
 
 //*********************************************************** */
 
 //********************************************************* */
 //      Wikipedia
 //********************************************************* */
-$('#myBtnWiki').click(function() {
+//$('#myBtnWiki').click(function() {
     console.log("wwwwwwwiiiiiiiiiiiiiiikkkkiiiiiiiiiiii");
     var name2 = $('#txtName').text();
     console.log(name2);
@@ -584,94 +708,12 @@ $('#myBtnWiki').click(function() {
                 console.log(textStatus, errorThrown);
                       }
                   });
-})
+//})
 
-//******Click country information button
-// Get the modal
-var modal = document.getElementById("myModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
+});  // on change select list if country
 
 //  ***   END country information button
 
-
-//******Click country Weather button
-// Get the modal
-var modalWeather = document.getElementById("myModalWeather");
-
-// Get the button that opens the modal
-var btnWeather = document.getElementById("myBtnWeather");
-
-// Get the <span> element that closes the modal
-var spanWeather = document.getElementsByClassName("closeWeather")[0];
-
-// When the user clicks the button, open the modal 
-btnWeather.onclick = function() {
-  modalWeather.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-spanWeather.onclick = function() {
-  modalWeather.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modalWeather) {
-    modalWeather.style.display = "none";
-  }
-}
-
-//  ***   END country Weather button
-
-//******Click country Wikipedia button
-
-// Get the modal
-var modalWiki = document.getElementById("myModalWiki");
-
-// Get the button that opens the modal
-var btnWiki = document.getElementById("myBtnWiki");
-
-// Get the <span> element that closes the modal
-var spanWiki = document.getElementsByClassName("closeWiki")[0];
-
-// When the user clicks the button, open the modal 
-btnWiki.onclick = function() {
-  modalWiki.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-spanWiki.onclick = function() {
-  modalWiki.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modalWiki) {
-    modalwiki.style.display = "none";
-  }
-}
  
 }); // end of $(document).ready(function ()/
 
