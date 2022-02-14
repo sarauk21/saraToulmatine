@@ -19,11 +19,11 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+/*span.onclick = function() {
 
   modal.style.display = "none";
 }
-
+*/
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
@@ -42,9 +42,7 @@ var modalWeather = document.getElementById("myModalWeather");
 var spanWeather = document.getElementsByClassName("closeWeather")[0];
 
 // When the user clicks on <span> (x), close the modal
-spanWeather.onclick = function() {
-  modalWeather.style.display = "none";
-}
+
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -64,9 +62,9 @@ var modalWiki = document.getElementById("myModalWiki");
 var spanWiki = document.getElementsByClassName("closeWiki")[0];
 
 // When the user clicks on <span> (x), close the modal
-spanWiki.onclick = function() {
+/*spanWiki.onclick = function() {
   modalWiki.style.display = "none";
-}
+}*/
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
@@ -90,13 +88,18 @@ window.onclick = function(event) {
             //alert(time)
             if (time == 'Information') {
             // When the user clicks the button, open the modal 
-            modal.style.display = "block";
+            var myModal = new bootstrap.Modal(document.getElementById("myModal"));
+        myModal.show();
+            //modal.style.display = "block";
           } else if (time == 'Wiki' ) {
             // When the user clicks the button, open the modal 
-            modalWiki.style.display = "block";
-          } else if (time == 'Weather' ) {
+            var myModal = new bootstrap.Modal(document.getElementById("myModalWiki"));
+            myModal.show();
+           // modalWiki.style.display = "block";
+          } else if (time == 'Weather' ) {   
             // When the user clicks the button, open the modal 
-            modalWeather.style.display = "block";
+            var myModal = new bootstrap.Modal(document.getElementById("myModalWeather"));
+            myModal.show();
           } else { } 
           },
           title: time
@@ -486,6 +489,31 @@ $.ajax({
                $('#txtPopulation').html(result['data'][0]['population']);
                $('#txtArea').html(result['data'][0]['areaInSqKm']);
               
+               //********************************************************* */
+//      Wikipedia
+//********************************************************* */
+//$('#myBtnWiki').click(function() {
+    console.log("wwwwwwwiiiiiiiiiiiiiiikkkkiiiiiiiiiiii");
+    var name2 = $('#txtName').text();
+    console.log(name2);
+    $.ajax({
+        url: "libs/php/wiki.php",
+        type: 'GET',
+        dataType: 'json',
+        data: {
+          place: result['data'][0]['countryName']
+        }, 
+        success: function(result) {                  
+           console.log('wiki info', result);      
+             if (result.status.name == "ok") {
+               $('#txtWikiImg').html('<img src=' + result.data.thumbnail.source +'><br>');
+               $('#txtWiki').html('Wikipedia: ' + result.data.extract +'<br>');
+             } 
+          },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+                      }
+                  });
            }
         }
    })
@@ -682,31 +710,7 @@ $.ajax({
 
 //*********************************************************** */
 
-//********************************************************* */
-//      Wikipedia
-//********************************************************* */
-//$('#myBtnWiki').click(function() {
-    console.log("wwwwwwwiiiiiiiiiiiiiiikkkkiiiiiiiiiiii");
-    var name2 = $('#txtName').text();
-    console.log(name2);
-    $.ajax({
-        url: "libs/php/wiki.php",
-        type: 'GET',
-        dataType: 'json',
-        data: {
-          place: $('#txtName').text()
-        }, 
-        success: function(result) {                  
-           console.log('wiki info', result);      
-             if (result.status.name == "ok") {
-               $('#txtWikiImg').html('<img src=' + result.data.thumbnail.source +'><br>');
-               $('#txtWiki').html('Wikipedia: ' + result.data.extract +'<br>');
-             } 
-          },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
-                      }
-                  });
+
 //})
 
 });  // on change select list if country
