@@ -77,14 +77,15 @@ window.onclick = function(event) {
 
   //  ******          NavBar Menue EasyButtons      ********
   var buttons = []; // NOTE: use a separate array to collect the buttons
-  var fileTime = ['Information', 'Wiki', 'Weather'];
+  var fileTime = [{title :'Information', icons:'fa-thin fa-info'},{title :'Wiki' , icons:'fa fa-question-circle-o'},{title :'Weather' ,icons:'fa fa-cloud'}];
   for (var i = 0; i < fileTime.length; i++) {
     (function() {
-      var time = String(fileTime[i])
+      var time = String(fileTime[i]['title']);
+      var icon1 = String(fileTime[i]['icons']);
       var mybutton = L.easyButton({
         id: time,
         states: [{
-          icon: '<div >' + time + '</div>',
+          icon: icon1 ,
           onClick: function(e) {
             //alert(time)
             if (time == 'Information') {
@@ -97,7 +98,8 @@ window.onclick = function(event) {
             // When the user clicks the button, open the modal 
             modalWeather.style.display = "block";
           } else { } 
-          }
+          },
+          title: time
         }]
       });
       buttons.push(mybutton) // NOTE: add to the buttons array instead of the map
@@ -675,9 +677,6 @@ $.ajax({
        }}
 })
 /***end place of intrest Cities    */
-   
-
-
 
 //})
 
