@@ -135,21 +135,20 @@
   left: 0;
   right: 0;
   margin: auto;
-}
-
+}/*
 #myeasybar {
   position: fixed;
   z-index: 1000;
   top: 50px;
-  left: 120px;
-}
+  left: 120px; 
+}*/
 #myeasybar button{
-  width : 85px;
-  height: 30px;
+ /* width : 85px;
+  height: 30px;*/
   font-family: arial;
   font-weight: bold;
   font-size: 12px;
-  display: inline-block;
+ /* display: inline-block;*/
   border-radius: 1px;
   border:1px solid #e7e7e7;
 
