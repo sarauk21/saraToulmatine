@@ -11,71 +11,10 @@ var map = L.map('map').setView([0, 0], 2);
 
   //var marker = L.marker([51.5, -0.09]).addTo(map);
 
-  //******Click country information button
-// Get the modal
-var modal = document.getElementById("myModal");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on <span> (x), close the modal
-/*span.onclick = function() {
-
-  modal.style.display = "none";
-}
-*/
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-
-//  ***   END country information button
-
-
-//******Click country Weather button
-// Get the modal
-var modalWeather = document.getElementById("myModalWeather");
-
-// Get the <span> element that closes the modal
-var spanWeather = document.getElementsByClassName("closeWeather")[0];
-
-// When the user clicks on <span> (x), close the modal
-
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modalWeather) {
-    modalWeather.style.display = "none";
-  }
-}
-
-//  ***   END country Weather button
-
-//******Click country Wikipedia button
-
-// Get the modal
-var modalWiki = document.getElementById("myModalWiki");
-
-// Get the <span> element that closes the modal
-var spanWiki = document.getElementsByClassName("closeWiki")[0];
-
-// When the user clicks on <span> (x), close the modal
-/*spanWiki.onclick = function() {
-  modalWiki.style.display = "none";
-}*/
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modalWiki) {
-    modalwiki.style.display = "none";
-  }
-}
-
   //  ******          NavBar Menue EasyButtons      ********
+
   var buttons = []; // NOTE: use a separate array to collect the buttons
-  var fileTime = [{title :'Information', icons:'fa-thin fa-info'},{title :'Wiki' , icons:'fa fa-question-circle-o'},{title :'Weather' ,icons:'fa fa-cloud'}];
+  var fileTime = [{title :'Information', icons:'fa-thin fa-info'},{title :'Wiki' , icons:'fa fa-wikipedia-w'},{title :'Weather' ,icons:'fa fa-cloud'}];
   for (var i = 0; i < fileTime.length; i++) {
     (function() {
       var time = String(fileTime[i]['title']);
