@@ -421,6 +421,7 @@ $.ajax({
            //console.log(" i am in geonam f");
            if (result['status']['name'] == "ok") {
                $('#txtNameHeader').html(result['data'][0]['countryName']);
+               $('#txtNameCountry').html(result['data'][0]['countryName']);
                $('#txtName').html(result['data'][0]['countryName']);
                $('#txtContinent').html(result['data'][0]['continent']);
                $('#txtCapital').html(result['data'][0]['capital']);
