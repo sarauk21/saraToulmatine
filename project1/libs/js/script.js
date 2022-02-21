@@ -444,10 +444,12 @@ $.ajax({
           place: result['data'][0]['countryName']
         }, 
         success: function(result) {                  
-           console.log('wiki info', result);      
+           console.log('wiki info geo', result);      
              if (result.status.name == "ok") {
-               $('#txtWikiImg').html('<img src=' + result.data.thumbnail.source +'><br>');
-               $('#txtWiki').html('Wikipedia: ' + result.data.extract +'<br>');
+               $('#txtWikiImg').html('<img src=' + result['data'][0]['thumbnailImg'] +'><br>');
+               $('#txtWiki').html('Wikipedia: ' + result['data'][0]['summary'] +'<br>');
+               $('#txtRank').html('Rank: ' + result['data'][0]['rank'] +'<br>');
+               $('#txtUrl').html('<a href= ' + result['data'][0]['wikipediaUrl'] +'> More info  </a><br>');
              } 
           },
             error: function(jqXHR, textStatus, errorThrown) {
