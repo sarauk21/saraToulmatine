@@ -1,7 +1,11 @@
 <?php
 
     $executionStartTime = microtime(true) / 1000;
-    $url='https://en.wikipedia.org/api/rest_v1/page/summary/'. $_REQUEST['place'];
+
+    $countryName = preg_replace('/\s+/', '%20', $_REQUEST['place']);
+  // $url='https://en.wikipedia.org/api/rest_v1/page/summary/'. $_REQUEST['place'];
+   //https://api.geonames.org/wikipediaSearchJSON?title=United%20Kingdom&maxRows=1&username=yourusername
+   $url='http://api.geonames.org/wikipediaSearchJSON?title=' . $countryName . '&maxRows=1&username=saraapi';
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -18,7 +22,7 @@
     $output['status']['name'] = "ok";
     $output['status']['description'] = "mission saved";
     $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-    $output['data'] = $decode;
+    $output['data'] = $decode['geonames'];
     
     header('Content-Type: application/json; charset=UTF-8');
 
