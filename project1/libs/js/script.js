@@ -449,7 +449,7 @@ $.ajax({
                $('#txtWikiImg').html('<img src=' + result['data'][0]['thumbnailImg'] +'><br>');
                $('#txtWiki').html('Wikipedia: ' + result['data'][0]['summary'] +'<br>');
                $('#txtRank').html('Rank: ' + result['data'][0]['rank'] +'<br>');
-               $('#txtUrl').html('<a href= ' + result['data'][0]['wikipediaUrl'] +'> More info  </a><br>');
+               $('#txtUrl').html('<a href= ' + ("https://") + result['data'][0]['wikipediaUrl'] +' target= _blank> Click it  </a><br>');
              } 
           },
             error: function(jqXHR, textStatus, errorThrown) {
