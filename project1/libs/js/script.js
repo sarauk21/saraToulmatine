@@ -102,6 +102,7 @@ document.onreadystatechange = function() {
     lng = position.coords.longitude;
     console.log(lat);console.log(lng);
 
+    
     // get country of current lat long  location
 
     $.ajax({
@@ -235,9 +236,24 @@ document.onreadystatechange = function() {
                                   });
            marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>");
            markers.addLayer(marker);
+
+//************************************ */
+map.removeLayer();
+           var redMarker = L.ExtraMarkers.icon({
+            icon: 'fa-coffee',
+            markerColor: 'red',
+            shape: 'square',
+            prefix: 'fa'
+          });
+        
+          L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']], {icon: redMarker}).addTo(map);
+//************************************************** */
+
           }   
-           map.addLayer(markers);
-           }}
+           //map.addLayer(markers);
+
+           }
+          }
    })
 
            /********* marker clusters countries     sightseeing */
@@ -271,9 +287,21 @@ document.onreadystatechange = function() {
                                
         marker2.bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>");
         markers2.addLayer(marker2);
+
+//************************************ */
+var redMarker = L.ExtraMarkers.icon({
+  icon: 'fa-coffee',
+  markerColor: 'red',
+  shape: 'square',
+  prefix: 'fa'
+});
+
+L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']], {icon: redMarker}).addTo(map);
+//************************************************** */
+
        }   
 
-        map.addLayer(markers2);
+        //map.addLayer(markers2);
        }}
 })
 /***end place of intrest sightseeing*/
@@ -309,9 +337,21 @@ document.onreadystatechange = function() {
                                
         marker3.bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>");
         markers3.addLayer(marker3);
+
+//************************************ */
+var redMarker = L.ExtraMarkers.icon({
+  icon: 'fa-coffee',
+  markerColor: 'red',
+  shape: 'square',
+  prefix: 'fa'
+});
+
+L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']], {icon: redMarker}).addTo(map);
+//************************************************** */
+
        }   
 
-        map.addLayer(markers3);
+        //map.addLayer(markers3);
        }}
 })
 /***end place of intrest Cities    */
@@ -513,15 +553,13 @@ $.ajax({
             };
             //console.log(border);
             if(border){
-
-                border.remove();
-                border = L.geoJSON(result2['data'], {
-                    style: myStyle
-                   }).addTo(map);
-
-              map.fitBounds(border.getBounds(), { padding : [50,50]});   
-                
+                border.remove();  
             } 
+            border = L.geoJSON(result2['data'], {
+              style: myStyle
+             }).addTo(map);
+
+        map.fitBounds(border.getBounds(), { padding : [50,50]});  
            }
         }
    })
@@ -550,9 +588,9 @@ $.ajax({
           console.log(" i got data back from triposo IPA to do markers cluster");  
            if (result['status']['name'] == "ok") {
             //console.log(" i get markers cluster");
-            if (markers && map.hasLayer(markers)) {
+            if (markers && extraMarker && map.hasLayer(markers)) {
               console.log(" i   3333333  PlaceIntrest");
-              map.removeLayer(markers);
+              map.removeLayer(markers, extraMarker);
             }
           
             //markers.clearLayers();  
@@ -567,6 +605,19 @@ $.ajax({
                                   });
            marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>");
            markers.addLayer(marker);
+
+//************************************ */
+var redMarker = L.ExtraMarkers.icon({
+  icon: 'fa-coffee',
+  markerColor: 'red',
+  shape: 'square',
+  prefix: 'fa'
+});
+
+var extraMarker = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']], {icon: redMarker});
+extraMarker.addTo(map);
+//************************************************** */
+
           }   
            map.addLayer(markers);
            }}
@@ -586,9 +637,9 @@ $.ajax({
       console.log(" Sightseeing i got data back from triposo IPA to do markers cluster");  
        if (result['status']['name'] == "ok") {
         //console.log(" Sightseeing i get markers cluster");
-        if (markers2 && map.hasLayer(markers2)) {
+        if (markers2 && extraMarker2 && map.hasLayer(markers2)) {
           console.log(" i  333333333 Sightseeing");
-          map.removeLayer(markers2);
+          map.removeLayer(markers2, extraMarker2);
         }
       
         //markers.clearLayers();  
@@ -603,6 +654,19 @@ $.ajax({
                                
         marker2.bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>");
         markers2.addLayer(marker2);
+
+//************************************ */
+var redMarker = L.ExtraMarkers.icon({
+  icon: 'fa-coffee',
+  markerColor: 'red',
+  shape: 'square',
+  prefix: 'fa'
+});
+
+var extraMarker2 = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']], {icon: redMarker});
+extraMarker2.addTo(map);
+//************************************************** */
+
        }   
 
         map.addLayer(markers2);
@@ -625,9 +689,10 @@ $.ajax({
       console.log(" cities i got data back from triposo IPA to do markers cluster");  
        if (result['status']['name'] == "ok") {
         //console.log(" Sightseeing i get markers cluster");
-        if (markers3 && map.hasLayer(markers3)) {
+        if (markers3 && extraMarker3 && map.hasLayer(markers3)) {
           console.log(" i  333333333 Cities");
-          map.removeLayer(markers3);
+          map.removeLayer(markers3, extraMarker3);
+          
         }
         //markers.clearLayers();  
         markers3 = L.markerClusterGroup();
@@ -641,6 +706,19 @@ $.ajax({
                                
         marker3.bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>");
         markers3.addLayer(marker3);
+
+//************************************ */
+var redMarker = L.ExtraMarkers.icon({
+  icon: 'fa-coffee',
+  markerColor: 'red',
+  shape: 'square',
+  prefix: 'fa'
+});
+
+var extraMarker3 = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']], {icon: redMarker});
+extraMarker3.addTo(map);
+//************************************************** */
+
        }   
 
         map.addLayer(markers3);
