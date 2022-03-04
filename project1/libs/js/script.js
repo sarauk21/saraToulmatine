@@ -74,7 +74,16 @@ $(document).ready(function () {
   var border;
   var codeCountry;
   var markers, markers2, markers3;
-  var lat;
+  
+  var extraMarker;
+   var extraMarker2;
+    var extraMarker3;
+      var extraMarker4;
+        var extraMarker5;
+          var extraMarker6;
+   
+  
+   var extraMarker; var lat;
   var lng;
 
   //  Preloding script
@@ -238,15 +247,20 @@ document.onreadystatechange = function() {
            markers.addLayer(marker);
 
 //************************************ */
-map.removeLayer();
+
            var redMarker = L.ExtraMarkers.icon({
             icon: 'fa-coffee',
             markerColor: 'red',
             shape: 'square',
             prefix: 'fa'
           });
+          
+          if (extraMarker) {
+                            extraMarker.remove();
+                            }
         
-          L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']], {icon: redMarker}).addTo(map);
+      extraMarker = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']], {icon: redMarker});
+extraMarker.addTo(map); 
 //************************************************** */
 
           }   
@@ -296,7 +310,14 @@ var redMarker = L.ExtraMarkers.icon({
   prefix: 'fa'
 });
 
-L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']], {icon: redMarker}).addTo(map);
+if (extraMarker2) {
+                            extraMarker2.remove();
+                            }
+        
+       
+        
+   extraMarker2 = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']], {icon: redMarker});
+extraMarker2.addTo(map);     
 //************************************************** */
 
        }   
@@ -346,7 +367,14 @@ var redMarker = L.ExtraMarkers.icon({
   prefix: 'fa'
 });
 
-L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']], {icon: redMarker}).addTo(map);
+if (extraMarker3) {
+                            extraMarker3.remove();
+                            }
+        
+       
+        
+    extraMarker3 = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']], {icon: redMarker});
+extraMarker3.addTo(map);    
 //************************************************** */
 
        }   
@@ -425,8 +453,8 @@ $.ajax({
                //Getting the min and max values for each day
               for(i = 0; i<7; i++){
           
-                  $('#day'+ (i+1) + 'Min').html( Number(result7['data'].list[i].main.temp_min - 273.15).toFixed(1)+ '°');
-                  $('#day'+ (i+1) + 'Max').html( Number(result7['data'].list[i].main.temp_max - 273.15).toFixed(1)+ '°');
+                  $('#day'+ (i+1) + 'Min').html( Number(result7['data'].list[i].main.temp_min - 273.15).toFixed(1)+ '째');
+                  $('#day'+ (i+1) + 'Max').html( Number(result7['data'].list[i].main.temp_max - 273.15).toFixed(1)+ '째');
           
                   $('#img'+ (i+1) ).attr("src", "http://openweathermap.org/img/wn/"+ result7['data'].list[i].weather[0].icon + '.png');
                   $('#day'+ (i+1) + 'Des').html( result7['data'].list[i].weather[0].main +'<br>'
@@ -614,8 +642,12 @@ var redMarker = L.ExtraMarkers.icon({
   prefix: 'fa'
 });
 
-var extraMarker = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']], {icon: redMarker});
-extraMarker.addTo(map);
+if (extraMarker4) {
+                            extraMarker4.remove();
+                            }
+
+extraMarker4 = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']] ,{icon: redMarker});
+extraMarker4.addTo(map);
 //************************************************** */
 
           }   
@@ -663,8 +695,14 @@ var redMarker = L.ExtraMarkers.icon({
   prefix: 'fa'
 });
 
-var extraMarker2 = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']], {icon: redMarker});
-extraMarker2.addTo(map);
+if (extraMarker5) {
+                            extraMarker5.remove();
+                            }
+
+extraMarker5 = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']]
+, {icon: redMarker});
+
+extraMarker5.addTo(map);
 //************************************************** */
 
        }   
@@ -715,8 +753,14 @@ var redMarker = L.ExtraMarkers.icon({
   prefix: 'fa'
 });
 
-var extraMarker3 = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']], {icon: redMarker});
-extraMarker3.addTo(map);
+if (extraMarker6) {
+                            extraMarker6.remove();
+                            }
+
+extraMarker6 = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']]
+, {icon: redMarker});
+
+extraMarker6.addTo(map);
 //************************************************** */
 
        }   
