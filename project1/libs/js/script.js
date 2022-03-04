@@ -83,7 +83,8 @@ $(document).ready(function () {
           var extraMarker6;
    
   
-   var extraMarker; var lat;
+   
+var lat;
   var lng;
 
   //  Preloding script
