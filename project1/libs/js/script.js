@@ -9,7 +9,29 @@ var map = L.map('map').setView([0, 0], 2);
     zoomOffset: -1,
    }).addTo(map);
 
-  //var marker = L.marker([51.5, -0.09]).addTo(map);
+   /********* define variable for extra marker cluster */
+
+  var redMarker = L.ExtraMarkers.icon({
+    icon: 'fa-coffee',
+    markerColor: 'white',
+    iconColor: 'red',
+    shape: 'square',
+    prefix: 'fa'
+  });
+  var blueMarker = L.ExtraMarkers.icon({
+    icon: 'fa-car',
+    markerColor: 'cyan',
+    iconColor: 'blue',
+    shape: 'circle',
+    prefix: 'fa'
+  });
+  var greenMarker = L.ExtraMarkers.icon({
+    icon: 'fa-eye',
+    markerColor: 'white',
+    iconColor: 'green',
+    shape: 'star',
+    prefix: 'fa'
+  });
 
   //  ******          NavBar Menue EasyButtons      ********
 
@@ -73,9 +95,7 @@ var map = L.map('map').setView([0, 0], 2);
 $(document).ready(function () {
   var border;
   var codeCountry;
-  var markers, markers2, markers3;
-  
-  var extraMarker = [], extraMarker2 = [], extraMarker3 = [];
+  var marker = [], marker2 = [], marker3 = [];
   var lat;
   var lng;
 
@@ -439,43 +459,25 @@ $.ajax({
             //console.log(" i get markers cluster");
 
              // remove existing markers clusters
-            if (markers) {
+            if (marker.length > 0) {
               console.log(" i   3333333  PlaceIntrest 202020202020202");
-              map.removeLayer(markers);
-            }
-            if (extraMarker.length > 0) {
-              console.log(" ON CHANGE i remove extraMarker ");
-              for (let i = 0; i < extraMarker.length; i++) {
-                                        extraMarker[i].remove();
+              for (let i = 0; i < marker.length; i++) {
+             map.removeLayer(marker[i]);
              } }
   
-            markers = L.markerClusterGroup();
-           
            for (let i = 0; i < result['data'].length; i++) {
             //console.log(result['data'][i]['coordinates']['latitude']);
       
              var namePlace = result['data'][i]['name'];
-           var marker = L.marker(new L.LatLng(result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']), {
-                  title: namePlace
-                                  });
-           marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>");
-           markers.addLayer(marker);
+           
+/********************************** */
+
+            marker[i] = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']] ,{icon: redMarker, title: namePlace});
+           marker[i].bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>").addTo(map);
+           //markers.addLayer(marker);
 
 //************************************ */
-var redMarker = L.ExtraMarkers.icon({
-  icon: 'fa-coffee',
-  markerColor: 'red',
-  iconColor: 'red',
-  shape: 'square',
-  prefix: 'fa'
-});
-
-extraMarker[i] = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']] ,{icon: redMarker});
-extraMarker[i].addTo(map);
-//************************************************** */
-
-          }   
-           map.addLayer(markers);
+          }    
            }}
    })
 
@@ -495,46 +497,27 @@ extraMarker[i].addTo(map);
         //console.log(" Sightseeing i get markers cluster");
 
          // remove existing markers clusters
-        if (markers2) {
+        if (marker2.length > 0) {
           console.log(" ON CHANGE i  333333333 Sightseeing");
-          map.removeLayer(markers2);
+          marker2.forEach(element => {
+            map.removeLayer(element);
+          });
+        
         }
-        if (extraMarker2.length > 0) {
-          console.log(" ON CHANGE i remove extraMarker2 ");
-          for (let i = 0; i < extraMarker2.length; i++) {
-                                    extraMarker2[i].remove();
-        }}
-        markers2 = L.markerClusterGroup();
        
         for (let j = 0; j < result['data'].length; j++) {
       
           var namePlace2 = result['data'][j]['name'];
-        var marker2 = L.marker(new L.LatLng(result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']), {
-               title: namePlace2
-                               });
-                               
-        marker2.bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>");
-        markers2.addLayer(marker2);
-
-//************************************ */
-var greenMarker = L.ExtraMarkers.icon({
-  icon: 'fa-car',
-  markerColor: 'green',
-  iconColor: 'green',
-  shape: 'square',
-  prefix: 'fa'
-});
-
-extraMarker2[j] = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']]
-, {icon: greenMarker});
-
-extraMarker2[j].addTo(map);
+        
 //************************************************** */
 
-       }   
+ marker2[j] = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']] ,{icon: greenMarker, title: namePlace2});
+marker2[j].bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>").addTo(map);
+//markers.addLayer(marker2);
 
-        map.addLayer(markers2);
-       }}
+       }   
+       }
+      }
 })
 /***end place of intrest sightseeing*/
 
@@ -555,46 +538,26 @@ extraMarker2[j].addTo(map);
         //console.log(" Sightseeing i get markers cluster");
 
          // remove existing markers clusters
-        if (markers3) {
+         if (marker3.length > 0) {
           console.log(" ON CHANGE i  333333333 Cities");
-          map.removeLayer(markers3);
-          
+          marker3.forEach(element => {
+            map.removeLayer(element);
+          });
+        
         }
-        if (extraMarker3.length > 0) {
-          console.log(" ON CHANGE i remove extraMarker3 ");
-          for (let i = 0; i < extraMarker3.length; i++) {
-                                    extraMarker3[i].remove();
-         } } 
-        markers3 = L.markerClusterGroup();
        
         for (let k = 0; k < result['data'].length; k++) {
       
         var namePlace3 = result['data'][k]['name'];
-        var marker3 = L.marker(new L.LatLng(result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']), {
-               title: namePlace3
-                               });
-                               
-        marker3.bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>");
-        markers3.addLayer(marker3);
-
+       
 //************************************ */
-var blueMarker = L.ExtraMarkers.icon({
-  icon: 'fa-eye',
-  markerColor: 'blue',
-  iconColor: 'blue',
-  shape: 'square',
-  prefix: 'fa'
-});
 
-extraMarker3[k] = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']]
-, {icon: blueMarker});
+ marker3[k] = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']] ,{icon: blueMarker, title: namePlace3});
+marker3[k].bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>").addTo(map);
+//markers3.addLayer(marker3);
 
-extraMarker3[k].addTo(map);
-//************************************************** */
 
        }   
-
-        map.addLayer(markers3);
        }}
 })
 /***end place of intrest Cities    */
