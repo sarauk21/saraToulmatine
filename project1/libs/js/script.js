@@ -95,6 +95,7 @@ var map = L.map('map').setView([0, 0], 2);
 $(document).ready(function () {
   var border;
   var codeCountry;
+  var markers, markers2, markers3;
   var marker = [], marker2 = [], marker3 = [];
   var lat;
   var lng;
@@ -358,7 +359,7 @@ $.ajax({
                $('#txtWikiImg').html('<img src=' + result['data'][0]['thumbnailImg'] +'><br>');
                $('#txtWiki').html('Wikipedia: ' + result['data'][0]['summary'] +'<br>');
                $('#txtRank').html('Rank: ' + result['data'][0]['rank'] +'<br>');
-               $('#txtUrl').html('<a href= ' + ("https://") + result['data'][0]['wikipediaUrl'] +' target= _blank> Click it  </a><br>');
+               $('#txtUrl').html('<a href= ' + ("https://") + result['data'][0]['wikipediaUrl'] +' target= _blank> Read more  </a><br>');
              } 
           },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -464,7 +465,12 @@ $.ajax({
               for (let i = 0; i < marker.length; i++) {
              map.removeLayer(marker[i]);
              } }
-  
+
+             if (markers) {
+              map.removeLayer(markers);
+            }
+            markers = L.markerClusterGroup();
+
            for (let i = 0; i < result['data'].length; i++) {
             //console.log(result['data'][i]['coordinates']['latitude']);
       
@@ -474,10 +480,11 @@ $.ajax({
 
             marker[i] = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']] ,{icon: redMarker, title: namePlace});
            marker[i].bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>").addTo(map);
-           //markers.addLayer(marker);
+           markers.addLayer(marker[i]);
 
 //************************************ */
-          }    
+          } 
+          map.addLayer(markers);   
            }}
    })
 
@@ -504,7 +511,11 @@ $.ajax({
           });
         
         }
-       
+        if (markers2) {
+          map.removeLayer(markers2);
+        }
+        markers2 = L.markerClusterGroup();
+
         for (let j = 0; j < result['data'].length; j++) {
       
           var namePlace2 = result['data'][j]['name'];
@@ -513,9 +524,10 @@ $.ajax({
 
  marker2[j] = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']] ,{icon: greenMarker, title: namePlace2});
 marker2[j].bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>").addTo(map);
-//markers.addLayer(marker2);
+markers2.addLayer(marker2[j]);
 
        }   
+       map.addLayer(markers2);
        }
       }
 })
@@ -545,7 +557,11 @@ marker2[j].bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + resul
           });
         
         }
-       
+        if (markers3) {
+          map.removeLayer(markers3);
+        }
+        markers3 = L.markerClusterGroup();
+
         for (let k = 0; k < result['data'].length; k++) {
       
         var namePlace3 = result['data'][k]['name'];
@@ -554,10 +570,11 @@ marker2[j].bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + resul
 
  marker3[k] = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']] ,{icon: blueMarker, title: namePlace3});
 marker3[k].bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>").addTo(map);
-//markers3.addLayer(marker3);
+markers3.addLayer(marker3[k]);
 
 
-       }   
+       } 
+       map.addLayer(markers3);  
        }}
 })
 /***end place of intrest Cities    */
