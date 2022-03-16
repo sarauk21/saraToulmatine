@@ -8,7 +8,7 @@ $executionStartTime = microtime(true);
 if ($_REQUEST['country'] == "GB") { $country2 = "uk";} else {$country2 = strtolower($_REQUEST['country']);}
 //echo $country2;
 
-$url='https://www.triposo.com/api/20220104/poi.json?countrycode='.$country2.'&tag_labels=sightseeing&count=50&fields=id,name,tag_labels,coordinates&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
+$url='https://www.triposo.com/api/20220104/poi.json?countrycode='.$country2.'&tag_labels=sightseeing&count=50&fields=id,name,images,snippet,tag_labels,coordinates&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
 //echo $url;
     $ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

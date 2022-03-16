@@ -32,7 +32,7 @@ $SelectLatLng = geocoding($_REQUEST['country']);
 
 //echo $_REQUEST['lat'];
 //echo  $_REQUEST['lon'];
-	$url='https://www.triposo.com/api/20220104/local_highlights.json?latitude='. $SelectLatLng['lat'].'&longitude='. $SelectLatLng['lng'].'&fields=poi:id,name,coordinates,snippet&max_distance=10000&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
+	$url='https://www.triposo.com/api/20220104/local_highlights.json?latitude='. $SelectLatLng['lat'].'&longitude='. $SelectLatLng['lng'].'&fields=poi:id,name,images,coordinates,snippet&max_distance=10000&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
 // airport categorie = 4bf58dd8d48988d1ed931735
 //echo $url;
     $ch = curl_init();

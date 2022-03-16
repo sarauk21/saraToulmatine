@@ -10,7 +10,7 @@ $executionStartTime = microtime(true);
 
 if ($_REQUEST['country'] == "GB") { $country2 = "uk";} else {$country2 = strtolower($_REQUEST['country']);}
 
-$url='https://www.triposo.com/api/20220104/location.json?countrycode='.$country2.'&tag_labels=city&count=50&fields=id,name,score,snippet,coordinates&order_by=-score&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
+$url='https://www.triposo.com/api/20220104/location.json?countrycode='.$country2.'&tag_labels=city&count=50&fields=id,name,score,snippet,images,country_id,coordinates&order_by=-score&account=X1KEJG95&token=107v9asrs2wvte1bm4hjtc0qjaum9vpz';
 
 
 //echo $url;
