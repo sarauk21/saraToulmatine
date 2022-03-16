@@ -484,7 +484,8 @@ $(document).ready(function () {
   
   
               let marker = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']], { icon: redMarker, title: namePlace });
-              marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>").openPopup(map);
+              marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>" +
+              "<p><img width='160' height='100' src=" + result['data'][i]['images'][0]['sizes']['thumbnail']['url'] + "><p/>").openPopup(map);
               markers.addLayer(marker);
   
             }
@@ -509,7 +510,9 @@ $(document).ready(function () {
         
         
                     let marker = L.marker([result['data'][j]['coordinates']['latitude'], result['data'][j]['coordinates']['longitude']], { icon: greenMarker, title: namePlace2 });
-                    marker.bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>").openPopup(map);
+                    marker.bindPopup("<p>" + result['data'][j]['name'] + "</p> " + "<p>" + result['data'][j]['tag_labels'][0] + "<p/>" +
+                     "<p>" + result['data'][j]['snippet'] + "<p/>" + 
+                      "<p><img width='160' height='100' src=" + result['data'][j]['images'][0]['sizes']['thumbnail']['url'] + "><p/>").openPopup(map);
                     markers.addLayer(marker);
                     
                   }
@@ -530,19 +533,16 @@ $(document).ready(function () {
                         console.log($('#sel').val());
                         console.log("ON CHANGE cities i got data back from triposo IPA to do markers cluster");
                         if (result['status']['name'] == "ok") {
-                        
-                        
                 
                           for (let k = 0; k < result['data'].length; k++) {
                 
                             var namePlace3 = result['data'][k]['name'];
                 
-                
                             let marker = L.marker([result['data'][k]['coordinates']['latitude'], result['data'][k]['coordinates']['longitude']], { icon: blueMarker, title: namePlace3 });
-                            marker.bindPopup("<p>" + result['data'][k]['name'] + "</p> " + "<p>" + result['data'][k]['snippet'][0] + "<p/>").openPopup(map);
+                            marker.bindPopup("<p>" + result['data'][k]['name'] + "</p> " + 
+                            "<p>" + result['data'][k]['snippet'] + "<p/>" +  "<p><img width='160' height='100' src=" + result['data'][k]['images'][0]['sizes']['thumbnail']['url'] + "><p/>").openPopup(map);
                             markers.addLayer(marker);
-                
-                
+                            
                           }
 
                           map.addLayer(markers);
