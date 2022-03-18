@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="dist/css/leaflet.extra-markers.min.css">
 
 <link rel="stylesheet" href="libs/css/style.css" />
+<link rel="stylesheet" href="libs/css/weather-icons.css" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
@@ -117,7 +118,7 @@
 
 
 <div id="myModalWeather" class="modal fade" tabindex="-1" >
-<div class="modal-dialog modal-dialog-scrollable modal-xl">
+<div class="modal-dialog modal-xl modal-dialog-scrollable ">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="txtNameCountry"></h5>
@@ -125,83 +126,128 @@
             </div>
             <div class="modal-body">
             
-  
-        <div class="p-1 my-1 bg-light rounded-1" >
-           <h4> Weather  </h4>
-        </div>
-        <div class="row g-3" >
-        <div class="col-md-6 col-lg-6 col-xl-4">
+        
+        <div class="container" id="wrapper">
+            <div class="container-fluid" id="current-weather">
+              <div class="row">
+                
+                <!-- Right panel -->
+                <div class="col-md-4 col-sm-5">
+                  <h5><spam id="txtNameCountry"></spam></h5>
+                  <h6 id="localDate"></h6>
+                  <h5 id="localTime"></h5>
+                  <a id="refreshButton" href="#"><i class="fa fa-refresh fa-fw" aria-hidden="true"></i> Refresh</a>
+                </div>
+                
+                <!-- Center panel -->
+                <div class="col-md-5 col-sm-7" style="margin: 10px auto;padding:0;">
+                  <div class="row">
+                    <i class="wi" id ="main-icon" style="font-size: 85px;"></i>
+                    <div>
+                      <spam id="mainTemperature"></spam>
+                      <p id="tempDescription"></p>
+                    </div>
+                   
+                  </div>
+                </div>
+                
+                <!-- Left panel -->
+                <div class="col-xs-12 col-sm-12 col-md-3 row" style="text-align: right;">
+                  <div class="col-md-12 col-sm-3 col-xs-3 side-weather-info">
+                    <h6>Humidity: <spam id="humidity"></spam>%</h6>
+                  </div>
+                  <div class="col-md-12 col-sm-3 col-xs-3 side-weather-info">
+                    <h6>Wind: <spam id="wind"></spam> m/s</h6>
+                  </div>
+                  <div class="col-md-12 col-sm-3 col-xs-3 side-weather-info">
+                    <h6>High: <spam id="mainTempHot"></spam>°</h6>
+                  </div>
+                  <div class="col-md-12 col-sm-3 col-xs-3 side-weather-info">
+                    <h6>Low: <spam id="mainTempLow"></spam>°</h6>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
             
-            <div id="iconsContainer">
-                <p class="weather" id="day1"></p>
-                <div class="image"><img src="" class="imgClass" id="img1"></div>
-                <p class="desValues" id="day1Des"></p>
-                <p class="minValues" id="day1Min"></p>
-                <p class="maxValues" id="day1Max"></p>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-           
-            <div id="iconsContainer">
-                <p class="weather" id="day2"></p>
-                <div class="image"><img src="" class="imgClass" id="img2"></div>
-                <p class="desValues" id="day2Des"></p>
-                <p class="minValues" id="day2Min"></p>
-                <p class="maxValues" id="day2Max"></p>
-            </div>    
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-    
-            <div id="iconsContainer">
-                <p class="weather" id="day3"></p>
-                <div class="image"><img src="" class="imgClass" id="img3"></div>
-                <p class="desValues" id="day3Des"></p>
-                <p class="minValues" id="day3Min"></p>
-                <p class="maxValues" id="day3Max"></p>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-           
-            <div id="iconsContainer">
-                <p class="weather" id="day4"></p>
-                <div class="image"><img src="" class="imgClass" id="img4"></div>
-                <p class="desValues" id="day4Des"></p>
-                <p class="minValues" id="day4Min"></p>
-                <p class="maxValues" id="day4Max"></p>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
+            <!-- Modal -->
           
-            <div id="iconsContainer">
-                <p class="weather" id="day5"></p>
-                <div class="image"><img src="" class="imgClass" id="img5"></div>
-                <p class="desValues" id="day5Des"></p>
-                <p class="minValues" id="day5Min"></p>
-                <p class="maxValues" id="day5Max"></p>
+            
+            <!-- 4 days forecast -->
+            <div class="container-fluid">
+              <div class="row" style="padding: 2px;">
+                
+                <!-- Day 1 -->
+                <div class="col-md-3 col-sm-6 day-weather-box">
+                  <div class="col-sm-12 day-weather-inner-box">
+                    <div class="col-sm-8 forecast-main">
+                      <p id="forecast-day-1-name"></p>
+                      <div class="row">
+                        <h5 id="forecast-day-1-main">°</h5>
+                        <i class="wi forecast-icon" id="forecast-day-1-icon"></i>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 forecast-min-low">
+                      <p><spam class="high-temperature" id="forecast-day-1-ht"></spam></p>
+                      <p><spam class="low-temperature" id="forecast-day-1-lt"></spam></p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Day 2 -->
+                <div class="col-md-3 col-sm-6 day-weather-box">
+                  <div class="col-sm-12 day-weather-inner-box">
+                    <div class="col-sm-8 forecast-main">
+                      <p id="forecast-day-2-name"></p>
+                      <div class="row">
+                        <h5 id="forecast-day-2-main">°</h5>
+                        <i class="wi forecast-icon" id="forecast-day-2-icon"></i>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 forecast-min-low">
+                        <p><spam class="high-temperature" id="forecast-day-2-ht"></spam></p>
+                      <p><spam class="low-temperature" id="forecast-day-2-lt"></spam></p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Day 3 -->
+                <div class="col-md-3 col-sm-6 day-weather-box">
+                  <div class="col-sm-12 day-weather-inner-box">
+                    <div class="col-sm-8 forecast-main">
+                      <p id="forecast-day-3-name"></p>
+                      <div class="row">
+                        <h5 id="forecast-day-3-main">°</h5>
+                        <i class="wi forecast-icon" id="forecast-day-3-icon"></i>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 forecast-min-low">
+                      <p><spam class="high-temperature" id="forecast-day-3-ht"></spam></p>
+                      <p><spam class="low-temperature" id="forecast-day-3-lt"></spam></p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Day 4 -->
+                <div class="col-md-3 col-sm-6 day-weather-box">
+                  <div class="col-sm-12 day-weather-inner-box">
+                    <div class="col-sm-8 forecast-main">
+                      <p id="forecast-day-4-name"></p>
+                      <div class="row">
+                        <h5 id="forecast-day-4-main">°</h5>
+                        <i class="wi forecast-icon" id="forecast-day-4-icon"></i>
+                      </div>
+                    </div>
+                    <div class="col-sm-4 forecast-min-low">
+                      <p><spam class="high-temperature" id="forecast-day-4-ht"></spam></p>
+                      <p><spam class="low-temperature" id="forecast-day-4-lt"></spam></p>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
             </div>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <h4></h4>
-            <div id="iconsContainer">
-                <p class="weather" id="day6"></p>
-                <div class="image"><img src="" class="imgClass" id="img6"></div>
-                <p class="desValues" id="day6Des"></p>
-                <p class="minValues" id="day6Min"></p>
-                <p class="maxValues" id="day6Max"></p>
-            </div>
-        </div>
-        <div class="col-md-6 col-lg-6 col-xl-4">
-            <h4></h4>
-            <div id="iconsContainer">
-                <p class="weather" id="day7"></p>
-                <div class="image"><img src="" class="imgClass" id="img7"></div>
-                <p class="desValues" id="day7Des"></p>
-                <p class="minValues" id="day7Min"></p>
-                <p class="maxValues" id="day7Max"></p>
-            </div>
-        </div>
-       
-    </div>
+          </div>
 </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
