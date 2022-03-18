@@ -356,20 +356,20 @@ updateForecast(result7['data']);
 function updateForecast(forecast){
 
   // Present day
-  var today = forecast.list[0];
+  var today = forecast.daily[0];
   $("#tempDescription").text(toCamelCase(today.weather[0].description));
-  $("#humidity").text(today.main.humidity);
-  $("#wind").text(today.wind.speed);
+  $("#humidity").text(today.humidity);
+  $("#wind").text(today.wind_speed);
   $("#localDate").text(getFormattedDate(today.dt));
   $("#main-icon").addClass(weatherIconsMap[today.weather[0].icon]);
-  $("#mainTemperature").text(Math.round(today.main.temp));
-  $("#mainTempHot").text(Math.round(today.main.temp_max));
-  $("#mainTempLow").text(Math.round(today.main.temp_min));
+  $("#mainTemperature").text(Math.round(today.temp.day));
+  $("#mainTempHot").text(Math.round(today.temp.max));
+  $("#mainTempLow").text(Math.round(today.temp.min));
 
 
   // Following days data
-  for(var i = 1; i < (forecast.list).length; i++){
-    var day = forecast.list[i];
+  for(var i = 1; i < (forecast.daily).length; i++){
+    var day = forecast.daily[i];
 
     // Day short format e.g. Mon
     var dayName = getFormattedDate(day.dt).substring(0,3);
@@ -379,9 +379,9 @@ function updateForecast(forecast){
 
     $("#forecast-day-" + i + "-name").text(dayName);
     $("#forecast-day-" + i + "-icon").addClass(weatherIcon);
-    $("#forecast-day-" + i + "-main").text(Math.round(day.main.temp));
-    $("#forecast-day-" + i + "-ht").text(Math.round(day.main.temp_max));
-    $("#forecast-day-" + i + "-lt").text(Math.round(day.main.temp_min));
+    $("#forecast-day-" + i + "-main").text(Math.round(day.temp.day));
+    $("#forecast-day-" + i + "-ht").text(Math.round(day.temp.max));
+    $("#forecast-day-" + i + "-lt").text(Math.round(day.temp.min));
   }
 }
 
