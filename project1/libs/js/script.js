@@ -106,13 +106,13 @@ $(document).ready(function () {
 
   document.onreadystatechange = function () {
     if (document.readyState !== "complete") {
-      console.log("loaging");
+     // console.log("loaging");
       document.querySelector(
         "body").style.visibility = "hidden";
       document.querySelector(
         "#loader").style.visibility = "visible";
     } else {
-      console.log("Ready");
+      //console.log("Ready");
       document.querySelector(
         "#loader").style.display = "none";
       document.querySelector(
@@ -125,7 +125,7 @@ $(document).ready(function () {
   navigator.geolocation.getCurrentPosition(position => {
     lat = position.coords.latitude;
     lng = position.coords.longitude;
-    console.log(lat); console.log(lng);
+    //console.log(lat); console.log(lng);
 
 
     // get country of current lat long  location
@@ -142,10 +142,10 @@ $(document).ready(function () {
 
           var codeCountry = result['data']['countryCode'];
           //alert(codeCountry);
-          console.log("==========================");
-          console.log(codeCountry);
+         // console.log("==========================");
+         // console.log(codeCountry);
           $('#sel').val(codeCountry).change();
-          console.log("==========================");
+          //console.log("==========================");
           $.ajax({
             url: 'libs/php/getCountryInfo.php',
             type: 'POST',
@@ -282,11 +282,11 @@ $(document).ready(function () {
         data: { "country": region },
         success: result => {
           if (result['status']['name'] == "ok") {
-            console.log(" i got lat lng of selected country");
+            //console.log(" i got lat lng of selected country");
             latitude = result['data']['lat'];
             Lngtitude = result['data']['lng'];
-            console.log(latitude);
-            console.log(Lngtitude);
+            //console.log(latitude);
+            //console.log(Lngtitude);
   
             //********************************************************* */
             //      Weather
@@ -304,23 +304,188 @@ $(document).ready(function () {
               success: result7 => {
                 //console.log(JSON.stringify(result));
                 if (result7['status']['name'] == "ok") {
-                  console.log(" i get weather ");
-                  //Getting the min and max values for each day
-                  for (i = 0; i < 7; i++) {
-  
-                    $('#day' + (i + 1) + 'Min').html(Number(result7['data'].list[i].main.temp_min - 273.15).toFixed(1) + '°');
-                    $('#day' + (i + 1) + 'Max').html(Number(result7['data'].list[i].main.temp_max - 273.15).toFixed(1) + '°');
-  
-                    $('#img' + (i + 1)).attr("src", "http://openweathermap.org/img/wn/" + result7['data'].list[i].weather[0].icon + '.png');
-                    $('#day' + (i + 1) + 'Des').html(result7['data'].list[i].weather[0].main + '<br>'
-                      + result7['data'].list[i].weather[0].description);
-  
-                    $('#day' + (i + 1)).html(createDate(result7['data'].list[i].dt, "long"));
-  
-                    //var day = new Date(result7['data'].list[i].dt*1000);
-                    //$('#day'+ (i+1)).html(day.toDateString());  // 'Fri Jan 15 2021'
-  
-                  }
+               
+var unitIsCelcius = true;
+var globalForecast = [];
+
+// Maps the API's icons to the ones from https://erikflowers.github.io/weather-icons/
+var weatherIconsMap = {
+  "01d": "wi-day-sunny",
+  "01n": "wi-night-clear",
+  "02d": "wi-day-cloudy",
+  "02n": "wi-night-cloudy",
+  "03d": "wi-cloud",
+  "03n": "wi-cloud",
+  "04d": "wi-cloudy",
+  "04n": "wi-cloudy",
+  "09d": "wi-showers",
+  "09n": "wi-showers",
+  "10d": "wi-day-hail",
+  "10n": "wi-night-hail",
+  "11d": "wi-thunderstorm",
+  "11n": "wi-thunderstorm",
+  "13d": "wi-snow",
+  "13n": "wi-snow",
+  "50d": "wi-fog",
+  "50n": "wi-fog"
+};
+
+$(function(){
+  startClock();  
+});
+
+
+function startClock(){
+  setInterval(function(){
+    $("#localTime").text(new Date().toLocaleTimeString());
+  }, 1000);
+}
+
+
+globalForecast = result7['data'];
+updateForecast(result7['data']);
+
+
+      // Stops Refresh button's spinning animation
+      $("#refreshButton").html("<i class='fa fa-refresh fa-fw'></i> Refresh");
+   
+
+
+
+// Update view values from passed forecast
+function updateForecast(forecast){
+
+  // Present day
+  var today = forecast.list[0];
+  $("#tempDescription").text(toCamelCase(today.weather[0].description));
+  $("#humidity").text(today.main.humidity);
+  $("#wind").text(today.wind.speed);
+  $("#localDate").text(getFormattedDate(today.dt));
+  $("#main-icon").addClass(weatherIconsMap[today.weather[0].icon]);
+  $("#mainTemperature").text(Math.round(today.main.temp));
+  $("#mainTempHot").text(Math.round(today.main.temp_max));
+  $("#mainTempLow").text(Math.round(today.main.temp_min));
+
+
+  // Following days data
+  for(var i = 1; i < (forecast.list).length; i++){
+    var day = forecast.list[i];
+
+    // Day short format e.g. Mon
+    var dayName = getFormattedDate(day.dt).substring(0,3);
+
+    // weather icon from map
+    var weatherIcon = weatherIconsMap[day.weather[0].icon];
+
+    $("#forecast-day-" + i + "-name").text(dayName);
+    $("#forecast-day-" + i + "-icon").addClass(weatherIcon);
+    $("#forecast-day-" + i + "-main").text(Math.round(day.main.temp));
+    $("#forecast-day-" + i + "-ht").text(Math.round(day.main.temp_max));
+    $("#forecast-day-" + i + "-lt").text(Math.round(day.main.temp_min));
+  }
+}
+
+// Refresh button handler
+$("#refreshButton").on("click", function(){
+  // Starts Refresh button's spinning animation
+  $("#refreshButton").html("<i class='fa fa-refresh fa-spin fa-fw'></i>");
+  getWeatherData();
+});
+
+
+// Celcius button handler.
+// Converts every shown value to Celcius
+$("#celcius").on("click", function(){
+  if(!unitIsCelcius){
+    $("#farenheit").removeClass("active");
+    this.className = "active";
+
+    // main day
+    var today = globalForecast.list[0];
+    today.temp.day = toCelcius(today.temp.day);
+    today.temp.max = toCelcius(today.temp.max);
+    today.temp.min = toCelcius(today.temp.min);
+    globalForecast.list[0] = today;
+
+    // week
+    for(var i = 1; i < 5; i ++){
+      var weekDay = globalForecast.list[i];
+      weekDay.temp.day = toCelcius(weekDay.temp.day);
+      weekDay.temp.max = toCelcius(weekDay.temp.max);
+      weekDay.temp.min = toCelcius(weekDay.temp.min);
+      globalForecast[i] = weekDay;
+    }
+
+    // update view with updated values
+    updateForecast(globalForecast);
+
+    unitIsCelcius = true;
+  }
+});
+
+
+// Farenheit button handler
+// Converts every shown value to Farenheit
+$("#farenheit").on("click", function(){  
+  if(unitIsCelcius){
+    $("#celcius").removeClass("active");
+    this.className = "active";
+    
+    // main day
+    var today = globalForecast.list[0];
+    today.temp.day = toFerenheit(today.temp.day);
+    today.temp.max = toFerenheit(today.temp.max);
+    today.temp.min = toFerenheit(today.temp.min);
+    globalForecast.list[0] = today;
+
+    // week
+    for(var i = 1; i < 5; i ++){
+      var weekDay = globalForecast.list[i];
+      weekDay.temp.day = toFerenheit(weekDay.temp.day);
+      weekDay.temp.max = toFerenheit(weekDay.temp.max);
+      weekDay.temp.min = toFerenheit(weekDay.temp.min);
+      globalForecast[i] = weekDay;
+    }
+
+    // update view with updated values
+    updateForecast(globalForecast);
+    
+    unitIsCelcius = false;
+  }
+});
+
+
+// Applies the following format to date: WeekDay, Month Day, Year
+function getFormattedDate(date){
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(date * 1000).toLocaleDateString("en-US",options);
+}
+
+
+// Formats the text to CamelCase
+function toCamelCase(str) {
+  var arr = str.split(" ").map(
+    function(sentence){
+      return sentence.charAt(0).toUpperCase() + sentence.substring(1);
+    }
+  );
+  return arr.join(" ");
+}
+
+
+// Converts to Celcius
+function toCelcius(val){
+  return Math.round((val - 32) * (5/9));
+}
+
+
+// Converts to Farenheit
+function toFerenheit(val){
+  var degrees = (val * 1.8) + 32;
+  var rounded = Math.round(degrees);
+  return rounded;
+}
+
                 }
               }
             })
@@ -358,9 +523,9 @@ $(document).ready(function () {
             //      Wikipedia
             //********************************************************* */
             //$('#myBtnWiki').click(function() {
-            console.log("wwwwwwwiiiiiiiiiiiiiiikkkkiiiiiiiiiiii");
+            //console.log("wwwwwwwiiiiiiiiiiiiiiikkkkiiiiiiiiiiii");
             var name2 = $('#txtName').text();
-            console.log(name2);
+            //console.log(name2);
             $.ajax({
               url: "libs/php/wiki.php",
               type: 'GET',
@@ -369,7 +534,7 @@ $(document).ready(function () {
                 place: result['data'][0]['countryName']
               },
               success: function (result) {
-                console.log('wiki info geo', result);
+               // console.log('wiki info geo', result);
                 if (result.status.name == "ok") {
                   $('#txtWikiImg').html('<img src=' + result['data'][0]['thumbnailImg'] + '><br>');
                   $('#txtWiki').html('Wikipedia: ' + result['data'][0]['summary'] + '<br>');
@@ -378,7 +543,7 @@ $(document).ready(function () {
                 }
               },
               error: function (jqXHR, textStatus, errorThrown) {
-                console.log(textStatus, errorThrown);
+                //console.log(textStatus, errorThrown);
               }
             });
           }
@@ -430,7 +595,7 @@ $(document).ready(function () {
         data: { "country": $('#sel').val() },
         success: result2 => {
           //console.log(JSON.stringify(result2));
-          console.log(" i am going to draw borders");
+          //console.log(" i am going to draw borders");
           if (result2['status']['name'] == "ok") {
             //L.geoJSON(geojsonFeature).addTo(map);
             var myStyle = {
@@ -485,7 +650,7 @@ $(document).ready(function () {
   
               let marker = L.marker([result['data'][i]['coordinates']['latitude'], result['data'][i]['coordinates']['longitude']], { icon: redMarker, title: namePlace });
               marker.bindPopup("<p>" + result['data'][i]['name'] + "</p> " + "<p>" + result['data'][i]['snippet'] + "<p/>" +
-              "<p><img width='160' height='100' src=" + result['data'][i]['images'][0]['sizes']['thumbnail']['url'] + "><p/>").openPopup(map);
+              "<p><img width='160' height='100' src="+ result['data'][i]['images'][0]['sizes']['thumbnail']['url'] +"><p/>").openPopup(map);
               markers.addLayer(marker);
   
             }
@@ -502,7 +667,7 @@ $(document).ready(function () {
               data: { "country": $('#sel').val() },
         
               success: result => {
-                console.log($('#sel').val());
+                //console.log($('#sel').val());
                 if (result['status']['name'] == "ok") {
                   for (let j = 0; j < result['data'].length; j++) {
         
@@ -530,8 +695,8 @@ $(document).ready(function () {
                       data: { "country": $('#sel').val() },
                 
                       success: result => {
-                        console.log($('#sel').val());
-                        console.log("ON CHANGE cities i got data back from triposo IPA to do markers cluster");
+                       // console.log($('#sel').val());
+                       // console.log("ON CHANGE cities i got data back from triposo IPA to do markers cluster");
                         if (result['status']['name'] == "ok") {
                 
                           for (let k = 0; k < result['data'].length; k++) {
